@@ -5,92 +5,84 @@ import { motion, AnimatePresence } from 'framer-motion';
 export interface CreditsProps extends WindowAppProps {}
 
 const SLIDES = [
-`                           C R E D I T S
+`CREDITS
+
+DESIGNED & DEVELOPED BY
+
+SAM JERISH D`,
+
+`DEVELOPMENT
+
+FRONTEND
+
+HTML • CSS • JavaScript
+
+BACKEND
+
+Python • Flask
+
+PROGRAMMING
+
+TypeScript
+
+3D DEVELOPMENT
+
+Blender
+
+VERSION CONTROL
+
+Git • GitHub`,
+
+`CREATIVE TOOLS
+
+Blender
+
+Adobe Premiere Pro
+
+Canva
+
+ChatGPT
+
+Gemini
+
+Antigravity`,
+
+`SPECIAL THANKS
+
+MY PARENTS
+
+For their unwavering support.
+
+MY MENTORS & FACULTY
+
+For their guidance,
+encouragement,
+and belief in me.
+
+MY FRIENDS & COLLABORATORS
+
+For every challenge,
+every idea,
+and every shared success.
+
+THE OPEN SOURCE COMMUNITY
+
+For building the technologies
+that inspire innovation.`,
+
+`"EVERY PROJECT BEGINS WITH AN IDEA.
+
+EVERY LINE OF CODE BRINGS IT TO LIFE."`,
+
+`© 2026 SAM JERISH D
+
+ALL RIGHTS RESERVED
 
 
-                    DESIGNED & DEVELOPED BY
-
-                        SAM JERISH D`,
-
-`                         DEVELOPMENT
+THANK YOU FOR VISITING
 
 
-                          FRONTEND
-
-                 HTML • CSS • JavaScript
-
-
-                           BACKEND
-
-                      Python • Flask
-
-
-                         PROGRAMMING
-
-                         TypeScript
-
-
-                      3D DEVELOPMENT
-
-                           Blender
-
-
-                     VERSION CONTROL
-
-                       Git • GitHub`,
-
-`                      CREATIVE TOOLS
-
-
-                           Blender
-
-                   Adobe Premiere Pro
-
-                            Canva
-
-                          ChatGPT
-
-                           Gemini
-
-                         Antigravity`,
-
-`                      SPECIAL THANKS
-
-
-                        MY PARENTS
-
-             For their unwavering support.
-
-
-                  MY MENTORS & FACULTY
-
-    For their guidance, encouragement, and belief in me.
-
-
-             MY FRIENDS & COLLABORATORS
-
-    For every challenge, every idea, and every shared success.
-
-
-               THE OPEN SOURCE COMMUNITY
-
-    For building the technologies that inspire innovation.`,
-
-`                    "EVERY PROJECT BEGINS
-                        WITH AN IDEA.
-
-                     EVERY LINE OF CODE
-                    BRINGS IT TO LIFE."`,
-
-`                     © 2026 SAM JERISH D
-
-                      ALL RIGHTS RESERVED
-
-
-                   THANK YOU FOR VISITING
-
-
-                SEE YOU IN THE NEXT PROJECT`
+SEE YOU IN THE NEXT PROJECT`
 ];
 
 const Credits: React.FC<CreditsProps> = (props) => {
