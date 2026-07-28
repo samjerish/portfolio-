@@ -4,43 +4,84 @@ import { motion } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
-const CREDITS = [
-    {
-        title: 'Engineering & Design',
-        rows: [['SAM JERISH D', 'All']],
-    },
-    {
-        title: 'Modeling & Texturing',
-        rows: [
-            ['SAM JERISH D', 'Texturing, Composition, & UV'],
-            ['Mickael Boitte', 'Computer Model'],
-            ['Sean Nicolas', 'Environment Models'],
-        ],
-    },
-    {
-        title: 'Sound Design',
-        rows: [
-            ['SAM JERISH D', 'Mixing, Composition, & Foley'],
-            ['Sound Cassette', 'Office Ambience'],
-            ['Windows 95 Startup Sound', 'Microsoft'],
-        ],
-    },
-    {
-        title: 'Special Thanks',
-        rows: [
-            ['Bruno Simon', 'SimonDev'],
-            ['Lorelei Kravinsky', 'Scott Bass'],
-            ['Trey Briccetti', 'Mom, Dad & Angela'],
-        ],
-    },
-    {
-        title: 'Inspiration',
-        rows: [
-            ['Bruno Simon', 'Jesse Zhou'],
-            ['Pink Yellow', 'Vivek Patel'],
-        ],
-    },
-];
+const CREDITS_TEXT = `=========================================================
+                    END OF PORTFOLIO
+=========================================================
+
+DIRECTOR
+SAM JERISH D
+
+DESIGN & DEVELOPMENT
+SAM JERISH D
+
+UI / UX DESIGN
+SAM JERISH D
+
+FRONTEND DEVELOPMENT
+HTML • CSS • JavaScript
+
+BACKEND & DATABASE
+Python • Flask • Firebase
+
+3D & VISUAL DESIGN
+Blender • Spline
+
+MULTIMEDIA
+Photography
+Videography
+Video Editing
+Graphic Design
+
+SPECIAL THANKS
+
+My Parents
+For their endless support and encouragement.
+
+Karunya Institute of Technology and Sciences
+For providing opportunities to learn and grow.
+
+Matrix – AIML Students Association
+For trusting me as Joint Multimedia Coordinator
+and recognizing me as Best Media Coordinator.
+
+Every Mentor, Faculty Member & Friend
+Who inspired, guided, and challenged me.
+
+OPEN SOURCE COMMUNITY
+GitHub
+Stack Overflow
+MDN Web Docs
+
+POWERED BY
+
+Visual Studio Code
+Git & GitHub
+Figma
+Canva
+Adobe Photoshop
+Adobe Premiere Pro
+ChatGPT
+
+MISSION
+
+Building intelligent solutions where
+Creativity meets Technology.
+
+STATUS
+Portfolio Successfully Executed.
+
+UPTIME
+Learning Never Stops.
+
+FINAL MESSAGE
+
+Thank you for visiting.
+
+See you in the next project...
+
+> exit
+
+Connection closed.`;
 
 const Credits: React.FC<CreditsProps> = (props) => {
     return (
@@ -63,28 +104,23 @@ const Credits: React.FC<CreditsProps> = (props) => {
                 <div style={styles.slideContainer}>
                     <motion.div
                         initial={{ y: 800 }}
-                        animate={{ y: -1500 }}
+                        animate={{ y: -2500 }}
                         transition={{
-                            duration: 25,
+                            duration: 40,
                             ease: 'linear',
                             repeat: Infinity,
                         }}
                         style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}
                     >
-                        <h2 style={{ marginBottom: 16 }}>Credits</h2>
-                        <p style={{ marginBottom: 64 }}>samjerishd.com, 2026</p>
-                        
-                        {CREDITS.map((credit, idx) => (
-                            <div key={`section-${idx}`} style={styles.section}>
-                                <h3 style={styles.sectionTitle}>{credit.title}</h3>
-                                {credit.rows.map((row, i) => (
-                                    <div key={`row-${i}`} style={styles.row}>
-                                        <p>{row[0]}</p>
-                                        <p>{row[1]}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
+                        <pre style={{ 
+                            whiteSpace: 'pre-wrap', 
+                            textAlign: 'center', 
+                            lineHeight: 1.8, 
+                            fontFamily: 'monospace', 
+                            fontSize: '16px' 
+                        }}>
+                            {CREDITS_TEXT}
+                        </pre>
                     </motion.div>
                 </div>
             </div>
