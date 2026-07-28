@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Window from '../os/Window';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
@@ -96,11 +96,20 @@ that inspire innovation.
 
                 THANK YOU FOR VISITING.
 
-              SEE YOU IN THE NEXT PROJECT.
+              SEE YOU IN THE NEXT PROJECT.`;
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+const SLIDES = CREDITS_TEXT.split('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━').map(s => s.trim()).filter(s => s.length > 0);
 
 const Credits: React.FC<CreditsProps> = (props) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
+        }, 6000); // Wait 6 seconds per slide
+        return () => clearInterval(timer);
+    }, []);
+
     return (
         <Window
             top={48}
@@ -119,26 +128,33 @@ const Credits: React.FC<CreditsProps> = (props) => {
                 style={styles.credits}
             >
                 <div style={styles.slideContainer}>
-                    <motion.div
-                        initial={{ y: 800 }}
-                        animate={{ y: -2500 }}
-                        transition={{
-                            duration: 40,
-                            ease: 'linear',
-                            repeat: Infinity,
-                        }}
-                        style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}
-                    >
-                        <pre style={{ 
-                            whiteSpace: 'pre-wrap', 
-                            textAlign: 'center', 
-                            lineHeight: 1.8, 
-                            fontFamily: 'monospace', 
-                            fontSize: '16px' 
-                        }}>
-                            {CREDITS_TEXT}
-                        </pre>
-                    </motion.div>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentIndex}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 1.5 }}
+                            style={{ 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                width: '100%', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                position: 'absolute' 
+                            }}
+                        >
+                            <pre style={{ 
+                                whiteSpace: 'pre-wrap', 
+                                textAlign: 'center', 
+                                lineHeight: 2.0, 
+                                fontFamily: 'monospace', 
+                                fontSize: '18px' 
+                            }}>
+                                {SLIDES[currentIndex]}
+                            </pre>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </div>
         </Window>
