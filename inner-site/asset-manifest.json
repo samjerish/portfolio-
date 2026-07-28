@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "./static/css/main.22d0a6ca.css",
+    "main.js": "./static/js/main.a00cee63.js",
+    "static/js/787.749b4a44.chunk.js": "./static/js/787.749b4a44.chunk.js",
+    "static/media/media_coordinator.jpg": "./static/media/media_coordinator.0afead3313f15ff701ce.jpg",
+    "static/media/house_master.mp3": "./static/media/house_master.c7658602090fa4de7901.mp3",
+    "static/media/1st_photo.png": "./static/media/1st_photo.bf03cb3df82387ea8e7f.png",
+    "static/media/edge_unmastered.mp3": "./static/media/edge_unmastered.5fda28a397a77f0cd67d.mp3",
+    "static/media/break.mp3": "./static/media/break.ca994a82925ac512580d.mp3",
+    "static/media/screenshot_media_1.png": "./static/media/screenshot_media_1.9b6caa4aa49e9335be4f.png",
+    "static/media/dnb_drop_drums.mp3": "./static/media/dnb_drop_drums.24751dc8ad05058a701a.mp3",
+    "static/media/screenshot_media_2.png": "./static/media/screenshot_media_2.978b1fe08f06bf759d71.png",
+    "static/media/media_certificate.png": "./static/media/media_certificate.2aac4c774946fce8983a.png",
+    "static/media/MSSansSerif.ttf": "./static/media/MSSansSerif.aa14e7b110864a3c2e08.ttf",
+    "static/media/houseProject.png": "./static/media/houseProject.fdb8b40ccf0bed8a6554.png",
+    "static/media/dnbDrumsProject.png": "./static/media/dnbDrumsProject.c9dace015fac3b0a06af.png",
+    "static/media/hackathon_certificate.jpg": "./static/media/hackathon_certificate.92318f00f4cb42c09ca0.jpg",
+    "static/media/hackathon_prize.jpg": "./static/media/hackathon_prize.9d7b9b5ee126a353b86d.jpg",
+    "static/media/png.jpeg": "./static/media/png.01fe802a0af81461f8df.jpeg",
+    "static/media/ee.jpg": "./static/media/ee.7656e3a317181c8a39b1.jpg",
+    "static/media/Terminal.ttf": "./static/media/Terminal.6a1b7290048681921b2c.ttf",
+    "static/media/neverGiveUp.jpg": "./static/media/neverGiveUp.c9ee4e48677de77065a9.jpg",
+    "static/media/Millennium.ttf": "./static/media/Millennium.e16d74a8e8e0567ce30e.ttf",
+    "static/media/Millennium-Bold.ttf": "./static/media/Millennium-Bold.cd5e3be832ebd008c852.ttf",
+    "index.html": "./index.html",
+    "static/media/contact-ig.svg": "./static/media/contact-ig.2a71b0b17f958ab147a4add525787eda.svg",
+    "main.22d0a6ca.css.map": "./static/css/main.22d0a6ca.css.map",
+    "main.a00cee63.js.map": "./static/js/main.a00cee63.js.map",
+    "787.749b4a44.chunk.js.map": "./static/js/787.749b4a44.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.22d0a6ca.css",
+    "static/js/main.a00cee63.js"
+  ]
+}
