@@ -4,101 +4,50 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
-const CREDITS_TEXT = `  CREDITS
+const CREDITS_TEXT = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESIGNED & DEVELOPED BY          SAM JERISH D
 
-                 DESIGNED & DEVELOPED BY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-                     SAM JERISH D
+FRONTEND                         HTML • CSS • JavaScript
+BACKEND                          Python • Flask
+PROGRAMMING                      TypeScript
+3D DEVELOPMENT                   Blender
+VERSION CONTROL                  Git • GitHub
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-                      DEVELOPMENT
+CREATIVE TOOLS                   Blender
+                                 Adobe Premiere Pro
+                                 Canva
+                                 ChatGPT
+                                 Gemini
+                                 Antigravity
 
-FRONTEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-HTML • CSS • JAVASCRIPT
+SPECIAL THANKS                   My Parents
+                                 My Mentors & Faculty
+                                 My Friends & Collaborators
+                                 The Open Source Community
 
-BACKEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-PYTHON • FLASK
+QUOTE                            "Every project begins with an idea.
+                                 Every line of code brings it to life."
 
-PROGRAMMING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-TYPESCRIPT
+COPYRIGHT                        © 2026 SAM JERISH D
+                                 All Rights Reserved
 
-3D DEVELOPMENT
+                         Thank You for Visiting
+                                 See You in the Next Project
 
-BLENDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
-VERSION CONTROL
-
-GIT • GITHUB
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-                    CREATIVE TOOLS
-
-BLENDER
-
-ADOBE PREMIERE PRO
-
-CANVA
-
-CHATGPT
-
-GEMINI
-
-ANTIGRAVITY
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-                    SPECIAL THANKS
-
-MY PARENTS
-
-For their unwavering support.
-
-MY MENTORS & FACULTY
-
-For their guidance, encouragement,
-
-and belief in me.
-
-MY FRIENDS & COLLABORATORS
-
-For every challenge, every idea,
-
-and every shared success.
-
-THE OPEN SOURCE COMMUNITY
-
-For building the technologies
-
-that inspire innovation.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-                 "EVERY PROJECT BEGINS
-
-                     WITH AN IDEA.
-
-                  EVERY LINE OF CODE
-
-                 BRINGS IT TO LIFE."
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-                  © 2026 SAM JERISH D
-
-                  ALL RIGHTS RESERVED.
-
-                THANK YOU FOR VISITING.
-
-              SEE YOU IN THE NEXT PROJECT.`;
-
-const SLIDES = CREDITS_TEXT.split('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━').map(s => s.trim()).filter(s => s.length > 0);
+const SLIDES = CREDITS_TEXT.split('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━').map(s => s.trim()).filter(s => s.length > 0);
 
 const Credits: React.FC<CreditsProps> = (props) => {
     const [currentIndex, setCurrentIndex] = useState(0);
