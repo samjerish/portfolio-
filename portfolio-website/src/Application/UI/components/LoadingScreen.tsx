@@ -174,12 +174,12 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
                 >
                     <div style={styles.body} className="loading-screen-body">
                         <div style={{ whiteSpace: 'pre-wrap', color: 'white', fontFamily: 'inherit', lineHeight: 1.3, fontSize: '16px', padding: '24px' }}>
-{`SAM JERISH D OS v3.0
+                            {`SAM JERISH D OS v3.0
 Portfolio Edition
 
 $ boot --portfolio${
 displayProgress >= 0.1 ? '\n\n[00:00.231] Initializing System.......................OK' : ''}${
-displayProgress >= 0.2 ? '\n[00:00.547] Loading AI Engine.........................OK' : ''}${
+displayProgress >= 0.2 ? '\n[00:00.547] Loading Details.........................OK' : ''}${
 displayProgress >= 0.3 ? '\n[00:00.914] Loading Portfolio........................OK' : ''}${
 displayProgress >= 0.4 ? '\n[00:01.283] Loading Projects.........................OK' : ''}${
 displayProgress >= 0.5 ? '\n[00:01.602] Loading Experience.......................OK' : ''}${
@@ -188,7 +188,7 @@ displayProgress >= 0.7 ? '\n[00:02.201] Loading Creative Assets.................
 displayProgress >= 0.8 ? `\n[00:02.413] System ready.............................OK` : ''}${
 displayProgress >= 1.0 ? '\n\nLaunching portfolio...\n\nReady.' : ''}`}
                         </div>
-                        
+
                         {doneLoading && (
                             <div
                                 style={{
@@ -218,7 +218,7 @@ displayProgress >= 1.0 ? '\n\nLaunching portfolio...\n\nReady.' : ''}`}
                     </div>
                 </div>
             )}
-            
+
             {showDisclaimer && (
                 <div style={{
                     width: '100%', height: '100%', display: 'flex',
