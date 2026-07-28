@@ -185,25 +185,7 @@ displayProgress >= 0.4 ? '\n[00:01.283] Loading Projects........................
 displayProgress >= 0.5 ? '\n[00:01.602] Loading Experience.......................OK' : ''}${
 displayProgress >= 0.6 ? '\n[00:01.948] Connecting GitHub........................OK' : ''}${
 displayProgress >= 0.7 ? '\n[00:02.201] Loading Creative Assets..................OK' : ''}${
-displayProgress >= 0.8 ? `\n\n----------------------------------------------------
-
-SAM JERISH D
-AI & MACHINE LEARNING ENGINEERING STUDENT
-
-Status      : ONLINE
-Portfolio   : READY
-Repositories: CONNECTED
-
-Modules
--------
-> ABOUT
-> SKILLS
-> PROJECTS
-> ACHIEVEMENTS
-> PHOTOGRAPHY
-> CONTACT
-
-----------------------------------------------------` : ''}${
+displayProgress >= 0.8 ? `\n[00:02.413] System ready.............................OK` : ''}${
 displayProgress >= 1.0 ? '\n\nLaunching portfolio...\n\nReady.' : ''}`}
                         </div>
                         
