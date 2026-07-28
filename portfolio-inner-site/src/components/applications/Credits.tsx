@@ -4,84 +4,87 @@ import { motion } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
-const CREDITS_TEXT = `=========================================================
-                    END OF PORTFOLIO
-=========================================================
+const CREDITS_TEXT = `DESIGNED & DEVELOPED BY
 
-DIRECTOR
 SAM JERISH D
 
-DESIGN & DEVELOPMENT
-SAM JERISH D
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-UI / UX DESIGN
-SAM JERISH D
+DEVELOPMENT
 
-FRONTEND DEVELOPMENT
-HTML • CSS • JavaScript
+FRONTEND
 
-BACKEND & DATABASE
-Python • Flask • Firebase
+HTML • CSS • JAVASCRIPT
 
-3D & VISUAL DESIGN
-Blender • Spline
+BACKEND
 
-MULTIMEDIA
-Photography
-Videography
-Video Editing
-Graphic Design
+PYTHON • FLASK
+
+LANGUAGES
+
+TYPESCRIPT
+
+3D DEVELOPMENT
+
+BLENDER
+
+VERSION CONTROL
+
+GIT • GITHUB
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATIVE TOOLS
+
+BLENDER
+
+ADOBE PREMIERE PRO
+
+CANVA
+
+CHATGPT
+
+GEMINI
+
+ANTIGRAVITY
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 SPECIAL THANKS
 
-My Parents
-For their endless support and encouragement.
+MY PARENTS
 
-Karunya Institute of Technology and Sciences
-For providing opportunities to learn and grow.
+For their unwavering support.
 
-Matrix – AIML Students Association
-For trusting me as Joint Multimedia Coordinator
-and recognizing me as Best Media Coordinator.
+MY MENTORS & FACULTY
 
-Every Mentor, Faculty Member & Friend
-Who inspired, guided, and challenged me.
+For their guidance, encouragement, and belief in me.
 
-OPEN SOURCE COMMUNITY
-GitHub
-Stack Overflow
-MDN Web Docs
+MY FRIENDS & COLLABORATORS
 
-POWERED BY
+For every challenge, idea, and shared success.
 
-Visual Studio Code
-Git & GitHub
-Figma
-Canva
-Adobe Photoshop
-Adobe Premiere Pro
-ChatGPT
+THE OPEN SOURCE COMMUNITY
 
-MISSION
+For building the technologies that inspire innovation.
 
-Building intelligent solutions where
-Creativity meets Technology.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STATUS
-Portfolio Successfully Executed.
+"EVERY PROJECT BEGINS WITH AN IDEA.
 
-UPTIME
-Learning Never Stops.
+EVERY LINE OF CODE BRINGS IT TO LIFE."
 
-FINAL MESSAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Thank you for visiting.
+© 2026 SAM JERISH D
 
-See you in the next project...
+ALL RIGHTS RESERVED.
 
-> exit
+THANK YOU FOR VISITING.
 
-Connection closed.`;
+SEE YOU IN THE NEXT PROJECT.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
 const Credits: React.FC<CreditsProps> = (props) => {
     return (
