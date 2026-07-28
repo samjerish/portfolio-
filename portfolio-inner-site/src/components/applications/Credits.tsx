@@ -4,13 +4,17 @@ import { motion } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
-const CREDITS_TEXT = `DESIGNED & DEVELOPED BY
+const CREDITS_TEXT = `  CREDITS
 
-SAM JERISH D
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                 DESIGNED & DEVELOPED BY
 
-DEVELOPMENT
+                     SAM JERISH D
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+                      DEVELOPMENT
 
 FRONTEND
 
@@ -20,7 +24,7 @@ BACKEND
 
 PYTHON • FLASK
 
-LANGUAGES
+PROGRAMMING
 
 TYPESCRIPT
 
@@ -32,9 +36,9 @@ VERSION CONTROL
 
 GIT • GITHUB
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-CREATIVE TOOLS
+                    CREATIVE TOOLS
 
 BLENDER
 
@@ -48,9 +52,9 @@ GEMINI
 
 ANTIGRAVITY
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-SPECIAL THANKS
+                    SPECIAL THANKS
 
 MY PARENTS
 
@@ -58,33 +62,43 @@ For their unwavering support.
 
 MY MENTORS & FACULTY
 
-For their guidance, encouragement, and belief in me.
+For their guidance, encouragement,
+
+and belief in me.
 
 MY FRIENDS & COLLABORATORS
 
-For every challenge, idea, and shared success.
+For every challenge, every idea,
+
+and every shared success.
 
 THE OPEN SOURCE COMMUNITY
 
-For building the technologies that inspire innovation.
+For building the technologies
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+that inspire innovation.
 
-"EVERY PROJECT BEGINS WITH AN IDEA.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-EVERY LINE OF CODE BRINGS IT TO LIFE."
+                 "EVERY PROJECT BEGINS
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                     WITH AN IDEA.
 
-© 2026 SAM JERISH D
+                  EVERY LINE OF CODE
 
-ALL RIGHTS RESERVED.
+                 BRINGS IT TO LIFE."
 
-THANK YOU FOR VISITING.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-SEE YOU IN THE NEXT PROJECT.
+                  © 2026 SAM JERISH D
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+                  ALL RIGHTS RESERVED.
+
+                THANK YOU FOR VISITING.
+
+              SEE YOU IN THE NEXT PROJECT.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
 const Credits: React.FC<CreditsProps> = (props) => {
     return (
