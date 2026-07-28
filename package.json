@@ -2,7 +2,7 @@
   "name": "portfolio-monorepo",
   "version": "1.0.0",
   "description": "Root package to run both portfolio applications",
-  "homepage": "https://samjerish.github.io/portfolio",
+  "homepage": "https://samjerish.github.io/portfolio-",
   "scripts": {
     "install:all": "npm install --prefix portfolio-inner-site && npm install --prefix portfolio-website",
     "dev": "concurrently \"npm start --prefix portfolio-inner-site\" \"npm run dev --prefix portfolio-website\"",
