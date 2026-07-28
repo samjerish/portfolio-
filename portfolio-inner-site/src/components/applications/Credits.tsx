@@ -128,7 +128,7 @@ const Credits: React.FC<CreditsProps> = (props) => {
                 style={styles.credits}
             >
                 <div style={styles.slideContainer}>
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence exitBeforeEnter>
                         <motion.div
                             key={currentIndex}
                             initial={{ opacity: 0, y: 10 }}
