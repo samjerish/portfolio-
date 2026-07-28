@@ -173,7 +173,7 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
                     })}
                 >
                     <div style={styles.body} className="loading-screen-body">
-                        <div style={{ whiteSpace: 'pre-wrap', color: 'white', fontFamily: 'inherit', lineHeight: 1.3, fontSize: '13px', padding: '24px' }}>
+                        <div style={{ whiteSpace: 'pre-wrap', color: 'white', fontFamily: 'inherit', lineHeight: 1.3, fontSize: '16px', padding: '24px' }}>
 {`SAM JERISH D OS v3.0
 Portfolio Edition
 
