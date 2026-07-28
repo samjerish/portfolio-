@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-monorepo",
+  "version": "1.0.0",
+  "description": "Root package to run both portfolio applications",
+  "scripts": {
+    "install:all": "npm install --prefix portfolio-inner-site && npm install --prefix portfolio-website",
+    "dev": "concurrently \"npm start --prefix portfolio-inner-site\" \"npm run dev --prefix portfolio-website\"",
+    "build": "npm run build --prefix portfolio-inner-site && npm run build --prefix portfolio-website && rm -rf portfolio-website/public/inner-site && cp -r portfolio-inner-site/build portfolio-website/public/inner-site"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
