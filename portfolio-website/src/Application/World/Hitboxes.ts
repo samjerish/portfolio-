@@ -46,7 +46,38 @@ export default class Hitboxes {
             if (intersects.length > 0) {
                 const objectName = intersects[0].object.name;
                 if (objectName === 'paper' || objectName === 'paper_stack_1' || objectName === 'paper_stack_2') {
-                    window.open('https://drive.google.com/file/d/1GHR7zz6k51wn_LIt4UnoYSVmmbzLQS2l/view?usp=share_link', '_blank');
+                    const paperMesh = intersects[0].object;
+                    
+                    if (!paperMesh.userData.isAnimatingAway) {
+                        paperMesh.userData.isAnimatingAway = true;
+                        
+                        const originalPos = new THREE.Vector3(
+                            paperMesh.position.x, 
+                            paperMesh.userData.originalY !== undefined ? paperMesh.userData.originalY : paperMesh.position.y, 
+                            paperMesh.position.z
+                        );
+                        const originalRot = paperMesh.rotation.clone();
+
+                        new TWEEN.Tween(paperMesh.position)
+                            .to({ y: originalPos.y + 800, x: originalPos.x + 400, z: originalPos.z + 400 }, 700)
+                            .easing(TWEEN.Easing.Quadratic.In)
+                            .start();
+
+                        new TWEEN.Tween(paperMesh.rotation)
+                            .to({ x: originalRot.x + Math.PI * 4, y: originalRot.y + Math.PI * 4 }, 700)
+                            .easing(TWEEN.Easing.Quadratic.In)
+                            .onComplete(() => {
+                                window.open('https://drive.google.com/file/d/1GHR7zz6k51wn_LIt4UnoYSVmmbzLQS2l/view?usp=share_link', '_blank');
+                                
+                                // Reset after opening
+                                setTimeout(() => {
+                                    paperMesh.position.copy(originalPos);
+                                    paperMesh.rotation.copy(originalRot);
+                                    paperMesh.userData.isAnimatingAway = false;
+                                }, 500);
+                            })
+                            .start();
+                    }
                 }
                 
                 if (this.hitboxes && this.hitboxes[objectName]) {
@@ -84,7 +115,7 @@ export default class Hitboxes {
             // Animation logic for popping up the paper
             if (hoveredPaperObject !== currentlyHoveredPaper) {
                 // If we were hovering a paper and now we're not, animate it back down
-                if (currentlyHoveredPaper) {
+                if (currentlyHoveredPaper && !currentlyHoveredPaper.userData.isAnimatingAway) {
                     new TWEEN.Tween(currentlyHoveredPaper.position)
                         .to({ y: (currentlyHoveredPaper.userData.originalY || 0) }, 200)
                         .easing(TWEEN.Easing.Quadratic.Out)
@@ -92,7 +123,7 @@ export default class Hitboxes {
                 }
 
                 // If we are now hovering a new paper, animate it up
-                if (hoveredPaperObject) {
+                if (hoveredPaperObject && !hoveredPaperObject.userData.isAnimatingAway) {
                     if (hoveredPaperObject.userData.originalY === undefined) {
                         hoveredPaperObject.userData.originalY = hoveredPaperObject.position.y;
                     }
