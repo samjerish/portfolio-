@@ -4,99 +4,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
-const INTRO_TEXT = `DESIGNED & DEVELOPED BY
-
-SAM JERISH D`;
-
-const ROLLING_TEXT = `DEVELOPMENT
-
-FRONTEND
-
-HTML • CSS • JavaScript
-
-BACKEND
-
-Python • Flask
-
-PROGRAMMING
-
-TypeScript
-
-3D DEVELOPMENT
-
-Blender
-
-VERSION CONTROL
-
-Git • GitHub
-
-CREATIVE TOOLS
-
-Blender
-
-Adobe Premiere Pro
-
-Canva
-
-ChatGPT
-
-Gemini
-
-Antigravity
-
-SPECIAL THANKS
-
-MY PARENTS
-
-For their unwavering support.
-
-MY MENTORS & FACULTY
-
-For their guidance,
-
-encouragement,
-
-and belief in me.
-
-MY FRIENDS & COLLABORATORS
-
-For every challenge,
-
-every idea,
-
-and every shared success.
-
-THE OPEN SOURCE COMMUNITY
-
-For building the technologies
-
-that inspire innovation.`;
-
-const OUTRO_QUOTE = `"EVERY PROJECT BEGINS
-WITH AN IDEA.
-
-EVERY LINE OF CODE
-BRINGS IT TO LIFE."`;
-
-const OUTRO_FOOTER = `© 2026 SAM JERISH D
-ALL RIGHTS RESERVED
-
-THANK YOU FOR VISITING
-SEE YOU IN THE NEXT PROJECT`;
+const CREDITS_SEQUENCE = [
+    `DESIGNED & DEVELOPED BY\n\nSAM JERISH D`,
+    `DEVELOPMENT\n\nHTML\n\nCSS\n\nJavaScript\n\nPython\n\nFlask\n\nTypeScript`,
+    `CREATIVE\n\nBlender\n\nAdobe Premiere Pro\n\nCanva`,
+    `VERSION CONTROL\n\nGit\n\nGitHub`,
+    `AI TOOLS\n\nChatGPT\n\nGemini\n\nAntigravity`,
+    `SPECIAL THANKS\n\nMy Parents\n\nMy Mentors & Faculty\n\nMy Friends\n\nOpen Source Community`,
+    `"EVERY PROJECT\nBEGINS WITH AN IDEA."`,
+    `"EVERY LINE OF CODE\nBRINGS IT TO LIFE."`,
+    `© 2026\n\nSAM JERISH D`,
+    `THANK YOU\n\nFOR VISITING`,
+    `SEE YOU\n\nIN THE NEXT PROJECT`
+];
 
 const Credits: React.FC<CreditsProps> = (props) => {
-    const [phase, setPhase] = useState<'intro' | 'rolling' | 'outro_quote' | 'outro_footer'>('intro');
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
-        const t1 = setTimeout(() => setPhase('rolling'), 4000);
-        const t2 = setTimeout(() => setPhase('outro_quote'), 4000 + 25000);
-        const t3 = setTimeout(() => setPhase('outro_footer'), 4000 + 25000 + 7000);
-        return () => {
-            clearTimeout(t1);
-            clearTimeout(t2);
-            clearTimeout(t3);
-        };
-    }, []);
+        if (currentSlide < CREDITS_SEQUENCE.length - 1) {
+            // Show each slide for a total of 4.5 seconds
+            const timer = setTimeout(() => {
+                setCurrentSlide((prev) => prev + 1);
+            }, 4500);
+            return () => clearTimeout(timer);
+        }
+    }, [currentSlide]);
 
     return (
         <Window
@@ -117,120 +50,33 @@ const Credits: React.FC<CreditsProps> = (props) => {
             >
                 <div style={styles.slideContainer}>
                     <AnimatePresence exitBeforeEnter>
-                        {phase === 'intro' && (
-                            <motion.div
-                                key="intro"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 1.5 }}
-                                style={{ 
-                                    display: 'flex', 
-                                    flexDirection: 'column', 
-                                    width: '100%', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center',
-                                    position: 'absolute',
-                                    height: '100%'
-                                }}
-                            >
-                                <pre style={{ 
-                                    whiteSpace: 'pre-wrap', 
-                                    textAlign: 'center', 
-                                    lineHeight: 2.0, 
-                                    fontFamily: 'monospace', 
-                                    fontSize: '24px',
-                                    fontWeight: 'bold'
-                                }}>
-                                    {INTRO_TEXT}
-                                </pre>
-                            </motion.div>
-                        )}
-
-                        {phase === 'rolling' && (
-                            <motion.div
-                                key="rolling"
-                                initial={{ y: 800, opacity: 1 }}
-                                animate={{ y: -2200, opacity: 1 }}
-                                transition={{ duration: 25, ease: 'linear' }}
-                                style={{ 
-                                    display: 'flex', 
-                                    flexDirection: 'column', 
-                                    width: '100%', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'flex-start',
-                                    position: 'absolute' 
-                                }}
-                            >
-                                <pre style={{ 
-                                    whiteSpace: 'pre-wrap', 
-                                    textAlign: 'center', 
-                                    lineHeight: 2.0, 
-                                    fontFamily: 'monospace', 
-                                    fontSize: '18px' 
-                                }}>
-                                    {ROLLING_TEXT}
-                                </pre>
-                            </motion.div>
-                        )}
-                        
-                        {phase === 'outro_quote' && (
-                            <motion.div
-                                key="outro_quote"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 1.5 }}
-                                style={{ 
-                                    display: 'flex', 
-                                    flexDirection: 'column', 
-                                    width: '100%', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center',
-                                    position: 'absolute',
-                                    height: '100%'
-                                }}
-                            >
-                                <pre style={{ 
-                                    whiteSpace: 'pre-wrap', 
-                                    textAlign: 'center', 
-                                    lineHeight: 2.0, 
-                                    fontFamily: 'monospace', 
-                                    fontSize: '24px',
-                                }}>
-                                    {OUTRO_QUOTE}
-                                </pre>
-                            </motion.div>
-                        )}
-
-                        {phase === 'outro_footer' && (
-                            <motion.div
-                                key="outro_footer"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 1.5 }}
-                                style={{ 
-                                    display: 'flex', 
-                                    flexDirection: 'column', 
-                                    width: '100%', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center',
-                                    position: 'absolute',
-                                    height: '100%'
-                                }}
-                            >
-                                <pre style={{ 
-                                    whiteSpace: 'pre-wrap', 
-                                    textAlign: 'center', 
-                                    lineHeight: 2.0, 
-                                    fontFamily: 'monospace', 
-                                    fontSize: '18px',
-                                }}>
-                                    {OUTRO_FOOTER}
-                                </pre>
-                            </motion.div>
-                        )}
+                        <motion.div
+                            key={currentSlide}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 1.5 }}
+                            style={{ 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                width: '100%', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                position: 'absolute',
+                                height: '100%'
+                            }}
+                        >
+                            <pre style={{ 
+                                whiteSpace: 'pre-wrap', 
+                                textAlign: 'center', 
+                                lineHeight: 2.0, 
+                                fontFamily: 'monospace', 
+                                fontSize: '24px',
+                                fontWeight: currentSlide === 0 ? 'bold' : 'normal'
+                            }}>
+                                {CREDITS_SEQUENCE[currentSlide]}
+                            </pre>
+                        </motion.div>
                     </AnimatePresence>
                 </div>
             </div>
