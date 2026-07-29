@@ -58,14 +58,26 @@ export default class Hitboxes {
                         );
                         const originalRot = paperMesh.rotation.clone();
 
+                        // Compute target position in front of camera
+                        const dir = new THREE.Vector3();
+                        this.camera.instance.getWorldDirection(dir);
+                        const targetPos = this.camera.position.clone().add(dir.multiplyScalar(400));
+
+                        // Compute target rotation so it faces the camera
+                        const dummy = new THREE.Object3D();
+                        dummy.position.copy(targetPos);
+                        dummy.lookAt(this.camera.position);
+                        // If the paper was modeled lying flat (normal is +Y), rotate so +Y points to camera
+                        dummy.rotateX(-Math.PI / 2);
+
                         new TWEEN.Tween(paperMesh.position)
-                            .to({ y: originalPos.y + 800, x: originalPos.x + 400, z: originalPos.z + 400 }, 700)
-                            .easing(TWEEN.Easing.Quadratic.In)
+                            .to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 800)
+                            .easing(TWEEN.Easing.Quadratic.InOut)
                             .start();
 
                         new TWEEN.Tween(paperMesh.rotation)
-                            .to({ x: originalRot.x + Math.PI * 4, y: originalRot.y + Math.PI * 4 }, 700)
-                            .easing(TWEEN.Easing.Quadratic.In)
+                            .to({ x: dummy.rotation.x, y: dummy.rotation.y, z: dummy.rotation.z }, 800)
+                            .easing(TWEEN.Easing.Quadratic.InOut)
                             .onComplete(() => {
                                 window.open('https://drive.google.com/file/d/1GHR7zz6k51wn_LIt4UnoYSVmmbzLQS2l/view?usp=share_link', '_blank');
                                 
