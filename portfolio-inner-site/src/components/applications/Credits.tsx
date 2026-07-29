@@ -5,10 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 export interface CreditsProps extends WindowAppProps {}
 
 const CREDITS_SEQUENCE = [
-    `C R E D I T S`,
     `DESIGNED & DEVELOPED BY\nSAM JERISH D`,
     `DEVELOPMENT\nHTML • CSS • JavaScript • Python • Flask\nTypeScript • Blender • Git • GitHub`,
-    `CREATIVE TOOLS\nBlender • Adobe Premiere Pro • Canva • ChatGPT\nGemini • Antigravity`,
+    `CREATIVE TOOLS\nBlender • Adobe Premiere Pro • Canva • ChatGPT\nAntigravity`,
     `SPECIAL THANKS\n\nMY PARENTS\nFor their unwavering support.`,
     `MY MENTORS & FACULTY\nFor their guidance, encouragement, and belief in me.`,
     `MY FRIENDS & COLLABORATORS\nFor every challenge, every idea, and every shared success.`,
