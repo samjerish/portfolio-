@@ -4,14 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export interface CreditsProps extends WindowAppProps {}
 
-const SLIDES = [
-`CREDITS
+const INTRO_TEXT = `DESIGNED & DEVELOPED BY
 
-DESIGNED & DEVELOPED BY
+SAM JERISH D`;
 
-SAM JERISH D`,
-
-`DEVELOPMENT
+const ROLLING_TEXT = `DEVELOPMENT
 
 FRONTEND
 
@@ -31,9 +28,9 @@ Blender
 
 VERSION CONTROL
 
-Git • GitHub`,
+Git • GitHub
 
-`CREATIVE TOOLS
+CREATIVE TOOLS
 
 Blender
 
@@ -45,9 +42,9 @@ ChatGPT
 
 Gemini
 
-Antigravity`,
+Antigravity
 
-`SPECIAL THANKS
+SPECIAL THANKS
 
 MY PARENTS
 
@@ -56,25 +53,32 @@ For their unwavering support.
 MY MENTORS & FACULTY
 
 For their guidance,
+
 encouragement,
+
 and belief in me.
 
 MY FRIENDS & COLLABORATORS
 
 For every challenge,
+
 every idea,
+
 and every shared success.
 
 THE OPEN SOURCE COMMUNITY
 
 For building the technologies
-that inspire innovation.`,
 
-`"EVERY PROJECT BEGINS WITH AN IDEA.
+that inspire innovation.
 
-EVERY LINE OF CODE BRINGS IT TO LIFE."`,
+"EVERY PROJECT BEGINS
+WITH AN IDEA.
 
-`© 2026 SAM JERISH D
+EVERY LINE OF CODE
+BRINGS IT TO LIFE."
+
+© 2026 SAM JERISH D
 
 ALL RIGHTS RESERVED
 
@@ -82,17 +86,17 @@ ALL RIGHTS RESERVED
 THANK YOU FOR VISITING
 
 
-SEE YOU IN THE NEXT PROJECT`
-];
+SEE YOU IN THE NEXT PROJECT`;
 
 const Credits: React.FC<CreditsProps> = (props) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [phase, setPhase] = useState<'intro' | 'rolling'>('intro');
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
-        }, 6000); // Wait 6 seconds per slide
-        return () => clearInterval(timer);
+        // Show intro for 4 seconds, then transition to rolling phase
+        const timer = setTimeout(() => {
+            setPhase('rolling');
+        }, 4000);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
@@ -114,31 +118,62 @@ const Credits: React.FC<CreditsProps> = (props) => {
             >
                 <div style={styles.slideContainer}>
                     <AnimatePresence exitBeforeEnter>
-                        <motion.div
-                            key={currentIndex}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 1.5 }}
-                            style={{ 
-                                display: 'flex', 
-                                flexDirection: 'column', 
-                                width: '100%', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                position: 'absolute' 
-                            }}
-                        >
-                            <pre style={{ 
-                                whiteSpace: 'pre-wrap', 
-                                textAlign: 'center', 
-                                lineHeight: 2.0, 
-                                fontFamily: 'monospace', 
-                                fontSize: '18px' 
-                            }}>
-                                {SLIDES[currentIndex]}
-                            </pre>
-                        </motion.div>
+                        {phase === 'intro' && (
+                            <motion.div
+                                key="intro"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 1.5 }}
+                                style={{ 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    width: '100%', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    position: 'absolute',
+                                    height: '100%'
+                                }}
+                            >
+                                <pre style={{ 
+                                    whiteSpace: 'pre-wrap', 
+                                    textAlign: 'center', 
+                                    lineHeight: 2.0, 
+                                    fontFamily: 'monospace', 
+                                    fontSize: '24px',
+                                    fontWeight: 'bold'
+                                }}>
+                                    {INTRO_TEXT}
+                                </pre>
+                            </motion.div>
+                        )}
+
+                        {phase === 'rolling' && (
+                            <motion.div
+                                key="rolling"
+                                initial={{ y: 800, opacity: 1 }}
+                                animate={{ y: -3500, opacity: 1 }}
+                                transition={{ duration: 45, ease: 'linear' }}
+                                style={{ 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    width: '100%', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'flex-start',
+                                    position: 'absolute' 
+                                }}
+                            >
+                                <pre style={{ 
+                                    whiteSpace: 'pre-wrap', 
+                                    textAlign: 'center', 
+                                    lineHeight: 2.0, 
+                                    fontFamily: 'monospace', 
+                                    fontSize: '18px' 
+                                }}>
+                                    {ROLLING_TEXT}
+                                </pre>
+                            </motion.div>
+                        )}
                     </AnimatePresence>
                 </div>
             </div>
@@ -157,21 +192,7 @@ const styles: StyleSheetCSS = {
         color: 'white',
         overflow: 'hidden',
         height: '100%',
-    },
-    row: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        width: 600,
-        alignSelf: 'center',
-        marginBottom: 8,
-    },
-    section: {
-        alignItems: 'center',
-        flexDirection: 'column',
-        marginBottom: 64,
-    },
-    sectionTitle: {
-        marginBottom: 24,
+        position: 'relative'
     },
     slideContainer: {
         width: '100%',
@@ -179,6 +200,7 @@ const styles: StyleSheetCSS = {
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
+        position: 'relative'
     },
 };
 
