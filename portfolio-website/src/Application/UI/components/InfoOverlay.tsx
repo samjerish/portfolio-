@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FreeCamToggle from './FreeCamToggle';
 import MuteToggle from './MuteToggle';
+import FullScreenToggle from './FullScreenToggle';
 
 interface InfoOverlayProps {
     visible: boolean;
@@ -135,6 +136,11 @@ const InfoOverlay: React.FC<InfoOverlayProps> = ({ visible }) => {
                     {freeCamVisible && (
                         <div style={styles.lastRowChild}>
                             <FreeCamToggle />
+                        </div>
+                    )}
+                    {freeCamVisible && (
+                        <div style={styles.lastRowChild}>
+                            <FullScreenToggle />
                         </div>
                     )}
                 </div>
