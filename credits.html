@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits - SAM JERISH D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030303;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --text-dark: #666666;
+            --accent: #e0e0e0;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #111111 0%, var(--bg-color) 100%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        /* Container for all animations */
+        #credits-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            perspective: 1000px;
+        }
+
+        /* 1. Rolling Credits Section */
+        #rolling-credits {
+            position: absolute;
+            bottom: -150%;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            opacity: 1;
+            /* 18s total for roll up */
+            animation: rollUp 22s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .credit-group {
+            margin-bottom: 70px;
+        }
+
+        .credit-title {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .credit-name {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .credit-subtitle {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .credit-items {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* 2. Fade in out Texts */
+        .fade-section {
+            position: absolute;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        .fade-quote {
+            font-size: 2rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.15);
+        }
+
+        .fade-footer {
+            font-size: 1.1rem;
+            font-weight: 300;
+            line-height: 2.2;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .fade-footer .highlight {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            display: block;
+        }
+
+        /* Keyframes */
+        @keyframes rollUp {
+            0% {
+                bottom: -150%;
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            85% {
+                bottom: 120%;
+                opacity: 1;
+            }
+            100% {
+                bottom: 150%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                visibility: visible;
+                transform: translateY(20px) scale(0.95);
+                filter: blur(5px);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px) scale(1.05);
+                filter: blur(5px);
+            }
+        }
+
+        /* Timings */
+        /* Rolling credits take 22s. We can start the quote at 23s */
+        #quote-section {
+            animation: fadeInOut 7s ease-in-out 21s forwards;
+        }
+
+        /* Quote ends at 28s. Start footer at 29s */
+        #footer-section {
+            animation: fadeInOut 8s ease-in-out 29s forwards;
+        }
+
+        /* Optional: Adding a very subtle noise overlay for a cinematic feel */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.03;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div id="credits-container">
+        <!-- 1. Rolling Credits -->
+        <div id="rolling-credits">
+            <div class="credit-group">
+                <div class="credit-title">Designed and Developed By</div>
+                <div class="credit-name">SAM JERISH D</div>
+            </div>
+
+            <div class="credit-group">
+                <div class="credit-title">Development</div>
+                
+                <div class="credit-subtitle">Frontend</div>
+                <div class="credit-items">HTML &bull; CSS &bull; JavaScript</div>
+                
+                <div class="credit-subtitle">Backend</div>
+                <div class="credit-items">Python &bull; Flask</div>
+                
+                <div class="credit-subtitle">Programming</div>
+                <div class="credit-items">TypeScript</div>
+                
+                <div class="credit-subtitle">3D</div>
+                <div class="credit-items">Blender</div>
+                
+                <div class="credit-subtitle">Version Control</div>
+                <div class="credit-items">Git &bull; GitHub</div>
+            </div>
+
+            <div class="credit-group">
+                <div class="credit-title">Creative Tools</div>
+                <div class="credit-items">
+                    Blender<br>
+                    Adobe Premiere Pro<br>
+                    Canva<br>
+                    ChatGPT<br>
+                    Gemini<br>
+                    Antigravity
+                </div>
+            </div>
+
+            <div class="credit-group">
+                <div class="credit-title">Special Thanks</div>
+                <div class="credit-items" style="line-height: 2.2;">
+                    My Parents<br>
+                    My Mentors & Faculty<br>
+                    My Friends & Collaborators<br>
+                    The Open Source Community
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Fade Quote -->
+        <div id="quote-section" class="fade-section fade-quote">
+            <div>Every project begins with an idea.</div>
+            <div style="margin-top: 10px;">Every line of code brings it to life.</div>
+        </div>
+
+        <!-- 3. Fade Footer -->
+        <div id="footer-section" class="fade-section fade-footer">
+            <div>&copy; 2026 SAM JERISH D</div>
+            <div>All Rights Reserved</div>
+            <div style="margin-top: 30px;">Thank You For Visiting</div>
+            <div class="highlight">See You In The Next Project</div>
+        </div>
+    </div>
+</body>
+</html>
