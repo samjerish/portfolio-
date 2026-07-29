@@ -1,18 +1,3 @@
-# ███████╗ █████╗ ███╗   ███╗
-# ██╔════╝██╔══██╗████╗ ████║
-# ███████╗███████║██╔████╔██║
-# ╚════██║██╔══██║██║╚██╔╝██║
-# ███████║██║  ██║██║ ╚═╝ ██║
-# ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝
-
-```bash
-> Initializing Portfolio...
-> Loading Creativity............... ██████████ 100%
-> Loading Projects................. ██████████ 100%
-> Loading Experience............... ██████████ 100%
-> Loading Coffee................... ██████████ 999%
-```
-
 # 👋 Welcome, Stranger.
 
 You have successfully entered **Sam Jerish D's Portfolio Repository.**
