@@ -15,6 +15,7 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
     const [webGLErrorOpacity, setWebGLErrorOpacity] = useState(0);
 
     const [showDisclaimer, setShowDisclaimer] = useState(false);
+    const [showDisclaimerWarning, setShowDisclaimerWarning] = useState(false);
     const [disclaimerText, setDisclaimerText] = useState('');
 
     const [showBiosInfo, setShowBiosInfo] = useState(false);
@@ -106,13 +107,16 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
                 if (i === fullText.length) {
                     clearInterval(timer);
                     setTimeout(() => {
+                        setShowDisclaimerWarning(true);
+                    }, 500);
+                    setTimeout(() => {
                         setLoadingOverlayOpacity(0);
                         eventBus.dispatch('loadingScreenDone', {});
                         const ui = document.getElementById('ui');
                         if (ui) {
                             ui.style.pointerEvents = 'none';
                         }
-                    }, 1500);
+                    }, 4500);
                 }
             }, 100);
             return () => clearInterval(timer);
@@ -221,12 +225,25 @@ displayProgress >= 1.0 ? '\n\nLaunching portfolio...\n\nReady.' : ''}`}
 
             {showDisclaimer && (
                 <div style={{
-                    width: '100%', height: '100%', display: 'flex',
+                    width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
                     alignItems: 'center', justifyContent: 'center',
                     color: 'white', fontSize: '24px', fontFamily: 'inherit',
                     position: 'absolute', top: 0, left: 0
                 }}>
                     <p>{disclaimerText}<span className="blinking-cursor" /></p>
+                    <div style={{
+                        marginTop: '32px',
+                        fontSize: '16px',
+                        color: '#ffcc00',
+                        opacity: showDisclaimerWarning ? 1 : 0,
+                        transition: 'opacity 1s ease-in-out',
+                        textAlign: 'center',
+                        maxWidth: '80%',
+                        lineHeight: 1.5,
+                        fontFamily: 'monospace'
+                    }}>
+                        ⚠️ Warning: Viewing this portfolio on mobile may cause immediate design regret. Desktop users live happier lives.
+                    </div>
                 </div>
             )}
 
