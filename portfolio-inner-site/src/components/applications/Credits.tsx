@@ -70,7 +70,7 @@ THE OPEN SOURCE COMMUNITY
 
 For building the technologies
 
-that inspire innovation.\`;
+that inspire innovation.`;
 
 const OUTRO_QUOTE = `"EVERY PROJECT BEGINS
 WITH AN IDEA.
