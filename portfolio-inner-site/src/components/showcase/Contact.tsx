@@ -32,7 +32,6 @@ const SocialBox: React.FC<SocialBoxProps> = ({ link, icon }) => {
 };
 
 const Contact: React.FC<ContactProps> = (props) => {
-    const [company, setCompany] = useState('');
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
@@ -58,37 +57,30 @@ const Contact: React.FC<ContactProps> = (props) => {
         try {
             setIsLoading(true);
             const res = await fetch(
-                'https://api.samjerishd.com/api/contact',
+                'https://formspree.io/f/mdaqjepe',
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        company,
                         email,
                         name,
                         message,
                     }),
                 }
             );
-            // the response will be either {success: true} or {success: false, error: message}
-            const data = (await res.json()) as
-                | {
-                      success: false;
-                      error: string;
-                  }
-                | { success: true };
-            if (data.success) {
+            if (res.ok) {
                 setFormMessage(`Message successfully sent. Thank you ${name}!`);
-                setCompany('');
                 setEmail('');
                 setName('');
                 setMessage('');
                 setFormMessageColor(colors.blue);
                 setIsLoading(false);
             } else {
-                setFormMessage(data.error);
+                const data = await res.json();
+                setFormMessage(data.error || 'There was an error sending your message. Please try again.');
                 setFormMessageColor(colors.red);
                 setIsLoading(false);
             }
@@ -174,19 +166,7 @@ const Contact: React.FC<ContactProps> = (props) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <label>
-                        <p>
-                            <b>Company (optional):</b>
-                        </p>
-                    </label>
-                    <input
-                        style={styles.formItem}
-                        type="company"
-                        name="company"
-                        placeholder="Company"
-                        value={company}
-                        onChange={(e) => setCompany(e.target.value)}
-                    />
+
                     <label>
                         <p>
                             {!message && <span style={styles.star}>*</span>}
