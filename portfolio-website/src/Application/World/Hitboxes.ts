@@ -70,12 +70,16 @@ export default class Hitboxes {
                         // If the paper was modeled lying flat (normal is +Y), rotate so +Y points to camera
                         dummy.rotateX(-Math.PI / 2);
 
-                        new TWEEN.Tween(paperMesh.position)
+                        // Clone the paper so the original stays on the desk (avoiding black baked shadow spots)
+                        const paperClone = paperMesh.clone();
+                        this.scene.add(paperClone);
+
+                        new TWEEN.Tween(paperClone.position)
                             .to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 800)
                             .easing(TWEEN.Easing.Quadratic.InOut)
                             .start();
 
-                        new TWEEN.Tween(paperMesh.rotation)
+                        new TWEEN.Tween(paperClone.rotation)
                             .to({ x: dummy.rotation.x, y: dummy.rotation.y, z: dummy.rotation.z }, 800)
                             .easing(TWEEN.Easing.Quadratic.InOut)
                             .onComplete(() => {
@@ -83,8 +87,7 @@ export default class Hitboxes {
                                 
                                 // Reset after opening
                                 setTimeout(() => {
-                                    paperMesh.position.copy(originalPos);
-                                    paperMesh.rotation.copy(originalRot);
+                                    this.scene.remove(paperClone);
                                     paperMesh.userData.isAnimatingAway = false;
                                 }, 500);
                             })
