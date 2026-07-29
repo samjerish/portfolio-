@@ -24,8 +24,8 @@ export default class Boy {
     }
 
     setModel() {
-        this.model.scene.scale.set(400, 400, 400); 
-        this.model.scene.position.set(200, -500, 500); // adjust to fit the chair
+        this.model.scene.scale.set(1200, 1200, 1200); 
+        this.model.scene.position.set(0, -1500, 3200); // adjust to fit the chair
         this.model.scene.rotation.y = Math.PI; // face computer
 
         this.scene.add(this.model.scene);
