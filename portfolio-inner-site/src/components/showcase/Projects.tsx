@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import software from '../../assets/images/projects/software.gif';
-import art from '../../assets/images/projects/art.gif';
-import music from '../../assets/images/projects/music.gif';
 
 export interface ProjectsProps {}
 

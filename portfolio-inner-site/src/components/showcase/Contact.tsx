@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import colors from '../../constants/colors';
-import twitterIcon from '../../assets/images/contact-twitter.png';
 import ghIcon from '../../assets/images/contact-gh.png';
 import inIcon from '../../assets/images/contact-in.png';
 import igIcon from '../../assets/images/contact-ig.svg';
