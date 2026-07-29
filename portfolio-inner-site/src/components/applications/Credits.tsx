@@ -5,17 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 export interface CreditsProps extends WindowAppProps {}
 
 const CREDITS_SEQUENCE = [
-    `DESIGNED & DEVELOPED BY\n\nSAM JERISH D`,
-    `DEVELOPMENT\n\nHTML\n\nCSS\n\nJavaScript\n\nPython\n\nFlask\n\nTypeScript`,
-    `CREATIVE\n\nBlender\n\nAdobe Premiere Pro\n\nCanva`,
-    `VERSION CONTROL\n\nGit\n\nGitHub`,
-    `AI TOOLS\n\nChatGPT\n\nGemini\n\nAntigravity`,
-    `SPECIAL THANKS\n\nMy Parents\n\nMy Mentors & Faculty\n\nMy Friends\n\nOpen Source Community`,
-    `"EVERY PROJECT\nBEGINS WITH AN IDEA."`,
-    `"EVERY LINE OF CODE\nBRINGS IT TO LIFE."`,
-    `© 2026\n\nSAM JERISH D`,
-    `THANK YOU\n\nFOR VISITING`,
-    `SEE YOU\n\nIN THE NEXT PROJECT`
+    `C R E D I T S`,
+    `DESIGNED & DEVELOPED BY\nSAM JERISH D`,
+    `DEVELOPMENT\nHTML • CSS • JavaScript • Python • Flask\nTypeScript • Blender • Git • GitHub`,
+    `CREATIVE TOOLS\nBlender • Adobe Premiere Pro • Canva • ChatGPT\nGemini • Antigravity`,
+    `SPECIAL THANKS\n\nMY PARENTS\nFor their unwavering support.`,
+    `MY MENTORS & FACULTY\nFor their guidance, encouragement, and belief in me.`,
+    `MY FRIENDS & COLLABORATORS\nFor every challenge, every idea, and every shared success.`,
+    `THE OPEN SOURCE COMMUNITY\nFor building the technologies that inspire innovation.`,
+    `"EVERY PROJECT BEGINS\nWITH AN IDEA.\n\nEVERY LINE OF CODE\nBRINGS IT TO LIFE."`,
+    `© 2026 SAM JERISH D\nALL RIGHTS RESERVED\n\nTHANK YOU FOR VISITING\n\nSEE YOU IN THE NEXT PROJECT`
 ];
 
 const Credits: React.FC<CreditsProps> = (props) => {
