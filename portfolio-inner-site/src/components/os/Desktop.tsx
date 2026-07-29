@@ -47,6 +47,24 @@ const Desktop: React.FC<DesktopProps> = (props) => {
 
     const [shutdown, setShutdown] = useState(false);
     const [numShutdowns, setNumShutdowns] = useState(1);
+    
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(document.fullscreenElement !== null);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
+    }, []);
+
+    const exitFullscreen = useCallback(() => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(err => console.error(err));
+        }
+    }, []);
 
     useEffect(() => {
         if (shutdown === true) {
@@ -214,6 +232,28 @@ const Desktop: React.FC<DesktopProps> = (props) => {
                     );
                 })}
             </div>
+            {isFullscreen && (
+                <div
+                    onClick={exitFullscreen}
+                    style={{
+                        position: 'absolute',
+                        top: 16,
+                        right: 16,
+                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                        color: 'white',
+                        padding: '8px 16px',
+                        border: '2px solid white',
+                        cursor: 'pointer',
+                        zIndex: 999999,
+                        fontFamily: 'monospace',
+                        fontSize: '14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                >
+                    EXIT FULL SCREEN
+                </div>
+            )}
             <Toolbar
                 windows={windows}
                 toggleMinimize={toggleMinimize}
