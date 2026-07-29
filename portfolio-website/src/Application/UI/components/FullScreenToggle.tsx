@@ -4,9 +4,9 @@ import { Easing } from '../Animation';
 // @ts-ignore
 import fullscreenIcon from '../../../../static/textures/UI/fullscreen.svg';
 
-interface FullScreenToggleProps {}
+interface FullScreenToggleProps { }
 
-const FullScreenToggle: React.FC<FullScreenToggleProps> = ({}) => {
+const FullScreenToggle: React.FC<FullScreenToggleProps> = ({ }) => {
     const [isHovering, setIsHovering] = useState(false);
     const [isActive, setIsActive] = useState(false);
 
@@ -14,7 +14,7 @@ const FullScreenToggle: React.FC<FullScreenToggleProps> = ({}) => {
         (event) => {
             setIsActive(true);
             event.preventDefault();
-            
+
             // Try to make the iframe fullscreen
             const iframe = document.getElementById('computer-screen');
             if (iframe) {
