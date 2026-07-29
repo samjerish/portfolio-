@@ -93,6 +93,12 @@ export default class Hitboxes {
                             })
                             .start();
                     }
+                } else if (objectName === 'coffee') {
+                    const coffeeMesh = intersects[0].object;
+                    if (!coffeeMesh.userData.isDrinking && this.application.world && this.application.world.boy) {
+                        coffeeMesh.userData.isDrinking = true;
+                        this.application.world.boy.drinkCoffee(coffeeMesh);
+                    }
                 }
                 
                 if (this.hitboxes && this.hitboxes[objectName]) {
@@ -120,6 +126,8 @@ export default class Hitboxes {
                 if (objectName === 'paper' || objectName === 'paper_stack_1' || objectName === 'paper_stack_2') {
                     hoveredInteractable = true;
                     hoveredPaperObject = intersects[0].object;
+                } else if (objectName === 'coffee') {
+                    hoveredInteractable = true;
                 } else if (this.hitboxes && this.hitboxes[objectName]) {
                     hoveredInteractable = true;
                 }

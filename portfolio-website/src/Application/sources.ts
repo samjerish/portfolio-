@@ -25,6 +25,11 @@ const sources: Resource[] = [
         path: 'models/Decor/decor.glb',
     },
     {
+        name: 'boyModel',
+        type: 'gltfModel',
+        path: 'models/boy.glb',
+    },
+    {
         name: 'decorTexture',
         type: 'texture',
         path: 'models/Decor/baked_decor_modified.jpg',
