@@ -70,33 +70,32 @@ THE OPEN SOURCE COMMUNITY
 
 For building the technologies
 
-that inspire innovation.
+that inspire innovation.\`;
 
-"EVERY PROJECT BEGINS
+const OUTRO_QUOTE = `"EVERY PROJECT BEGINS
 WITH AN IDEA.
 
 EVERY LINE OF CODE
-BRINGS IT TO LIFE."
+BRINGS IT TO LIFE."`;
 
-© 2026 SAM JERISH D
-
+const OUTRO_FOOTER = `© 2026 SAM JERISH D
 ALL RIGHTS RESERVED
 
-
 THANK YOU FOR VISITING
-
-
 SEE YOU IN THE NEXT PROJECT`;
 
 const Credits: React.FC<CreditsProps> = (props) => {
-    const [phase, setPhase] = useState<'intro' | 'rolling'>('intro');
+    const [phase, setPhase] = useState<'intro' | 'rolling' | 'outro_quote' | 'outro_footer'>('intro');
 
     useEffect(() => {
-        // Show intro for 4 seconds, then transition to rolling phase
-        const timer = setTimeout(() => {
-            setPhase('rolling');
-        }, 4000);
-        return () => clearTimeout(timer);
+        const t1 = setTimeout(() => setPhase('rolling'), 4000);
+        const t2 = setTimeout(() => setPhase('outro_quote'), 4000 + 25000);
+        const t3 = setTimeout(() => setPhase('outro_footer'), 4000 + 25000 + 7000);
+        return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+            clearTimeout(t3);
+        };
     }, []);
 
     return (
@@ -152,8 +151,8 @@ const Credits: React.FC<CreditsProps> = (props) => {
                             <motion.div
                                 key="rolling"
                                 initial={{ y: 800, opacity: 1 }}
-                                animate={{ y: -3500, opacity: 1 }}
-                                transition={{ duration: 45, ease: 'linear' }}
+                                animate={{ y: -2200, opacity: 1 }}
+                                transition={{ duration: 25, ease: 'linear' }}
                                 style={{ 
                                     display: 'flex', 
                                     flexDirection: 'column', 
@@ -171,6 +170,64 @@ const Credits: React.FC<CreditsProps> = (props) => {
                                     fontSize: '18px' 
                                 }}>
                                     {ROLLING_TEXT}
+                                </pre>
+                            </motion.div>
+                        )}
+                        
+                        {phase === 'outro_quote' && (
+                            <motion.div
+                                key="outro_quote"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 1.5 }}
+                                style={{ 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    width: '100%', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    position: 'absolute',
+                                    height: '100%'
+                                }}
+                            >
+                                <pre style={{ 
+                                    whiteSpace: 'pre-wrap', 
+                                    textAlign: 'center', 
+                                    lineHeight: 2.0, 
+                                    fontFamily: 'monospace', 
+                                    fontSize: '24px',
+                                }}>
+                                    {OUTRO_QUOTE}
+                                </pre>
+                            </motion.div>
+                        )}
+
+                        {phase === 'outro_footer' && (
+                            <motion.div
+                                key="outro_footer"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 1.5 }}
+                                style={{ 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    width: '100%', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    position: 'absolute',
+                                    height: '100%'
+                                }}
+                            >
+                                <pre style={{ 
+                                    whiteSpace: 'pre-wrap', 
+                                    textAlign: 'center', 
+                                    lineHeight: 2.0, 
+                                    fontFamily: 'monospace', 
+                                    fontSize: '18px',
+                                }}>
+                                    {OUTRO_FOOTER}
                                 </pre>
                             </motion.div>
                         )}
