@@ -4,6 +4,7 @@
   "description": "Root package to run both portfolio applications",
   "homepage": "https://samjerish.github.io/portfolio-",
   "scripts": {
+    "postinstall": "npm run install:all",
     "install:all": "npm install --prefix portfolio-inner-site && npm install --prefix portfolio-website",
     "dev": "concurrently \"npm start --prefix portfolio-inner-site\" \"npm run dev --prefix portfolio-website\"",
     "build": "npm run build --prefix portfolio-inner-site && npm run build --prefix portfolio-website && rm -rf portfolio-website/public/inner-site && cp -r portfolio-inner-site/build portfolio-website/public/inner-site",
