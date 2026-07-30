@@ -13,10 +13,10 @@ export interface WindowProps {
     top: number;
     left: number;
     windowTitle?: string;
-    bottomLeftText?: string; // Kept for compatibility but might not be shown
+    bottomLeftText?: string;
     rainbow?: boolean;
     windowBarColor?: string;
-    windowBarIcon?: IconName; // Kept for compatibility
+    windowBarIcon?: IconName;
     onWidthChange?: (width: number) => void;
     onHeightChange?: (height: number) => void;
     children?: React.ReactNode;
@@ -34,16 +34,23 @@ const Window: React.FC<WindowProps> = (props) => {
 
     const resizeRef = useRef<any>(null);
 
-    const [top, setTop] = useState(props.top);
-    const [left, setLeft] = useState(props.left);
+    const [width, setWidth] = useState(() => Math.min(props.width, window.innerWidth));
+    const [height, setHeight] = useState(() => Math.min(props.height, window.innerHeight - 94)); // Account for menu bar + dock
+
+    const [top, setTop] = useState(() => {
+        const initHeight = Math.min(props.height, window.innerHeight - 94);
+        return Math.max(24, Math.min(props.top, window.innerHeight - initHeight - 70));
+    });
+    
+    const [left, setLeft] = useState(() => {
+        const initWidth = Math.min(props.width, window.innerWidth);
+        return Math.max(0, Math.min(props.left, window.innerWidth - initWidth));
+    });
 
     const lastClickInside = useRef(false);
 
-    const [width, setWidth] = useState(props.width);
-    const [height, setHeight] = useState(props.height);
-
-    const [contentWidth, setContentWidth] = useState(props.width);
-    const [contentHeight, setContentHeight] = useState(props.height);
+    const [contentWidth, setContentWidth] = useState(() => Math.min(props.width, window.innerWidth));
+    const [contentHeight, setContentHeight] = useState(() => Math.min(props.height, window.innerHeight - 94));
 
     const [windowActive, setWindowActive] = useState(true);
 
@@ -66,8 +73,13 @@ const Window: React.FC<WindowProps> = (props) => {
     };
 
     const onResize = ({ clientX, clientY }: any) => {
-        const curWidth = clientX - left;
-        const curHeight = clientY - top;
+        let curWidth = clientX - left;
+        let curHeight = clientY - top;
+        
+        // Clamp to screen borders
+        curWidth = Math.min(curWidth, window.innerWidth - left);
+        curHeight = Math.min(curHeight, window.innerHeight - top - 70);
+
         if (curWidth > 320) resizeRef.current.style.width = `${curWidth}px`;
         if (curHeight > 220) resizeRef.current.style.height = `${curHeight}px`;
         resizeRef.current.style.opacity = 1;
@@ -116,8 +128,12 @@ const Window: React.FC<WindowProps> = (props) => {
         if (!dragProps.current) return { x: 0, y: 0 };
         const { dragStartX, dragStartY } = dragProps.current;
 
-        const x = clientX - dragStartX + left;
-        const y = clientY - dragStartY + top;
+        let x = clientX - dragStartX + left;
+        let y = clientY - dragStartY + top;
+        
+        // Constrain to screen borders
+        x = Math.max(0, Math.min(x, window.innerWidth - width));
+        y = Math.max(24, Math.min(y, window.innerHeight - height - 70));
 
         return { x, y };
     };
@@ -161,8 +177,8 @@ const Window: React.FC<WindowProps> = (props) => {
                 left,
             });
             setWidth(window.innerWidth);
-            setHeight(window.innerHeight - 80); // leave space for dock and menu
-            setTop(24); // leave space for menu bar
+            setHeight(window.innerHeight - 94);
+            setTop(24);
             setLeft(0);
             setIsMaximized(true);
         }
@@ -193,49 +209,44 @@ const Window: React.FC<WindowProps> = (props) => {
     return (
         <div onMouseDown={onWindowInteract} style={styles.container}>
             <div
-                style={Object.assign({}, styles.window, {
-                    width,
-                    height,
-                    top,
-                    left,
-                    boxShadow: windowActive
-                        ? '0 20px 60px rgba(0, 0, 0, 0.4)'
-                        : '0 10px 30px rgba(0, 0, 0, 0.2)',
-                })}
+                style={Object.assign(
+                    {},
+                    styles.window,
+                    {
+                        width,
+                        height,
+                        top,
+                        left,
+                    },
+                    !windowActive && styles.windowInactive,
+                    props.rainbow && styles.rainbowWindow
+                )}
                 ref={windowRef}
             >
                 <div
                     style={styles.dragHitbox}
                     onMouseDown={startDrag}
                 ></div>
-                <div
-                    style={Object.assign(
-                        {},
-                        styles.topBar,
-                        !windowActive && { opacity: 0.7 }
-                    )}
-                >
-                    <div style={styles.windowTopButtons}>
-                        <div
-                            style={{ ...styles.trafficLight, backgroundColor: Colors.trafficLightRed }}
+                <div style={styles.topBar}>
+                    <div style={styles.trafficLights}>
+                        <div 
+                            style={Object.assign({}, styles.trafficLight, { backgroundColor: Colors.trafficLightRed })}
                             onClick={props.closeWindow}
                         />
-                        <div
-                            style={{ ...styles.trafficLight, backgroundColor: Colors.trafficLightYellow }}
+                        <div 
+                            style={Object.assign({}, styles.trafficLight, { backgroundColor: Colors.trafficLightYellow })}
                             onClick={props.minimizeWindow}
                         />
-                        <div
-                            style={{ ...styles.trafficLight, backgroundColor: Colors.trafficLightGreen }}
+                        <div 
+                            style={Object.assign({}, styles.trafficLight, { backgroundColor: Colors.trafficLightGreen })}
                             onClick={maximize}
                         />
                     </div>
                     <div style={styles.windowHeader}>
-                        <p style={Object.assign({}, styles.titleText, !windowActive && { color: Colors.darkGray })}>
-                            {props.windowTitle}
-                        </p>
+                        <p style={styles.titleText}>{props.windowTitle}</p>
                     </div>
-                    <div style={styles.rightSpacer} />
                 </div>
+                
                 <div style={styles.contentOuter}>
                     <div style={styles.content} ref={contentRef}>
                         {props.children}
@@ -307,22 +318,30 @@ const styles: StyleSheetCSS = {
         backdropFilter: 'blur(40px)',
         WebkitBackdropFilter: 'blur(40px)',
         position: 'absolute',
-        borderRadius: 12,
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        border: '1px solid rgba(255,255,255,0.3)',
+        borderRadius: 12,
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
         pointerEvents: 'auto', // Catch clicks on the window
         transition: 'box-shadow 0.2s',
+    },
+    windowInactive: {
+        boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    },
+    rainbowWindow: {
+        // Optional subtle rainbow border effect if requested
     },
     dragHitbox: {
         position: 'absolute',
         width: '100%',
-        height: 36,
+        height: 28,
         zIndex: 10000,
         top: 0,
         left: 0,
-        cursor: 'default', // macOS uses default cursor for drag
+        cursor: 'default',
     },
     resizeHitbox: {
         position: 'absolute',
@@ -335,13 +354,42 @@ const styles: StyleSheetCSS = {
     },
     topBar: {
         width: '100%',
-        height: 36,
+        height: 28,
         display: 'flex',
         alignItems: 'center',
         padding: '0 12px',
         boxSizing: 'border-box',
-        borderBottom: '1px solid rgba(0,0,0,0.1)',
-        backgroundColor: 'rgba(255,255,255,0.4)', // Slightly more opaque for the header
+        backgroundColor: 'transparent',
+    },
+    trafficLights: {
+        display: 'flex',
+        gap: 8,
+        zIndex: 10001, // Above drag hitbox
+    },
+    trafficLight: {
+        width: 12,
+        height: 12,
+        borderRadius: '50%',
+        cursor: 'pointer',
+        boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.1)',
+    },
+    windowHeader: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        pointerEvents: 'none', // Allow dragging through title
+        zIndex: 9999,
+    },
+    titleText: {
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 13,
+        fontWeight: 600,
+        color: 'rgba(0, 0, 0, 0.7)',
+        margin: 0,
+        padding: 0,
     },
     contentOuter: {
         flexGrow: 1,
@@ -357,38 +405,6 @@ const styles: StyleSheetCSS = {
         overflowY: 'auto', // Allow scrolling
         backgroundColor: Colors.white,
     },
-    windowTopButtons: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        width: 60, // Fixed width to help center the title
-        zIndex: 10001, // Above drag hitbox
-    },
-    trafficLight: {
-        width: 12,
-        height: 12,
-        borderRadius: '50%',
-        cursor: 'pointer',
-    },
-    windowHeader: {
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        pointerEvents: 'none', // Allow dragging through title
-    },
-    titleText: {
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-        fontSize: 13,
-        fontWeight: 600,
-        color: '#333',
-        margin: 0,
-        padding: 0,
-        userSelect: 'none',
-    },
-    rightSpacer: {
-        width: 60, // Balance the left buttons for perfect centering
-    }
 };
 
 export default Window;

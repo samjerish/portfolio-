@@ -223,7 +223,7 @@ const Desktop: React.FC<DesktopProps> = (props) => {
                     return (
                         <div
                             style={Object.assign({}, styles.shortcutContainer, {
-                                top: i * 104,
+                                marginBottom: 20,
                             })}
                             key={shortcut.shortcutName}
                         >
@@ -236,6 +236,11 @@ const Desktop: React.FC<DesktopProps> = (props) => {
                     );
                 })}
             </div>
+            <Toolbar
+                windows={windows}
+                toggleMinimize={toggleMinimize}
+                shutdown={startShutdown}
+            />
             {isFullscreen && (
                 <div
                     onClick={exitFullscreen}
@@ -258,11 +263,6 @@ const Desktop: React.FC<DesktopProps> = (props) => {
                     EXIT FULL SCREEN
                 </div>
             )}
-            <Toolbar
-                windows={windows}
-                toggleMinimize={toggleMinimize}
-                shutdown={startShutdown}
-            />
         </div>
     ) : (
         <ShutdownSequence
@@ -286,12 +286,18 @@ const styles: StyleSheetCSS = {
         backgroundColor: '#1d2e2f',
     },
     shortcutContainer: {
-        position: 'absolute',
+        marginBottom: 20,
+        position: 'relative',
+        width: 64,
+        height: 64,
     },
     shortcuts: {
         position: 'absolute',
-        top: 40,
-        right: 16,
+        top: 30,
+        right: 20,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     minimized: {
         pointerEvents: 'none',

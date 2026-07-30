@@ -37,16 +37,9 @@ const DesktopShortcut: React.FC<DesktopShortcutProps> = ({
 
     useEffect(() => {
         if (containerRef.current && Object.keys(scaledStyle).length === 0) {
-            //@ts-ignore
-            const boundingBox = containerRef.current.getBoundingClientRect();
             setScaledStyle({
-                transformOrigin: 'center',
-                transform: 'scale(1.5)',
-                left: boundingBox.width / 4,
-                top: boundingBox.height / 4,
-                // transform: 'scale(1.5)',
-                // left: boundingBox.width / 4,
-                // top: boundingBox.height / 4,
+                transform: 'scale(1.2)', // Slightly scale down for classic look, no absolute positioning needed
+                position: 'relative',
             });
         }
     }, [scaledStyle]);
@@ -138,9 +131,8 @@ const DesktopShortcut: React.FC<DesktopShortcutProps> = ({
 
 const styles: StyleSheetCSS = {
     appShortcut: {
-        position: 'absolute',
         width: 56,
-
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
