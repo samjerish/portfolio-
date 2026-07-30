@@ -83,7 +83,7 @@ export default class Hitboxes {
                             .to({ x: dummy.rotation.x, y: dummy.rotation.y, z: dummy.rotation.z }, 800)
                             .easing(TWEEN.Easing.Quadratic.InOut)
                             .onComplete(() => {
-                                window.open('https://drive.google.com/file/d/1GHR7zz6k51wn_LIt4UnoYSVmmbzLQS2l/view?usp=share_link', '_blank');
+                                window.open('https://drive.google.com/file/d/1duhzJIp2jMdn0YAW8BeHyFSciiTzQAii/view?usp=share_link', '_blank');
                                 
                                 // Reset after opening
                                 setTimeout(() => {
