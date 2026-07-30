@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Colors from '../../constants/colors';
 import { Icon } from '../general';
 
@@ -6,6 +6,16 @@ export interface MenuBarProps {
     shutdown: () => void;
     activeApp?: string;
 }
+
+const MENUS = {
+    apple: ['About This Mac', 'Shut Down...'],
+    File: ['New Window', 'Close Window'],
+    Edit: ['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'Select All'],
+    View: ['Toggle Full Screen'],
+    Go: ['My Showcase', 'Credits', 'Computer'],
+    Window: ['Minimize', 'Zoom'],
+    Help: ['Portfolio Help'],
+};
 
 const MenuBar: React.FC<MenuBarProps> = ({ shutdown, activeApp }) => {
     const getTime = () => {
@@ -28,7 +38,8 @@ const MenuBar: React.FC<MenuBarProps> = ({ shutdown, activeApp }) => {
     };
 
     const [time, setTime] = useState(getTime());
-    const [appleMenuOpen, setAppleMenuOpen] = useState(false);
+    const [activeMenu, setActiveMenu] = useState<string | null>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -37,32 +48,95 @@ const MenuBar: React.FC<MenuBarProps> = ({ shutdown, activeApp }) => {
         return () => clearInterval(interval);
     }, []);
 
-    return (
-        <div style={styles.menuBar}>
-            <div style={styles.leftSection}>
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setActiveMenu(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleMenuAction = (action: string) => {
+        setActiveMenu(null);
+        if (action === 'Shut Down...') {
+            shutdown();
+            return;
+        }
+        
+        if (['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'Select All'].includes(action)) {
+            // Mock functions for Edit menu
+            return;
+        }
+
+        if (action === 'About This Mac' || action === 'Portfolio Help') {
+            alert(`SAM JERISH D PORTFOLIO OS\nVersion 1.0\n\nA React-based macOS clone.`);
+            return;
+        }
+        
+        // Dispatch event for Desktop to handle
+        window.dispatchEvent(new CustomEvent('macOS_menu_action', { detail: { action } }));
+    };
+
+    const toggleMenu = (menuName: string) => {
+        if (activeMenu === menuName) {
+            setActiveMenu(null);
+        } else {
+            setActiveMenu(menuName);
+        }
+    };
+
+    const renderMenu = (menuName: string, label: string | JSX.Element, isApple: boolean = false) => {
+        const isOpen = activeMenu === menuName;
+        const options = MENUS[menuName as keyof typeof MENUS] || [];
+
+        return (
+            <div style={{ position: 'relative', height: '100%' }}>
                 <div 
-                    style={Object.assign({}, styles.menuItem, appleMenuOpen && styles.menuItemActive)}
-                    onClick={() => setAppleMenuOpen(!appleMenuOpen)}
+                    style={Object.assign({}, styles.menuItem, isOpen && styles.menuItemActive)}
+                    onClick={() => toggleMenu(menuName)}
                 >
-                    <span style={{ fontSize: 16 }}></span>
+                    {label}
                 </div>
-                {appleMenuOpen && (
-                    <div style={styles.appleMenu}>
-                        <div style={styles.appleMenuItem} onClick={shutdown}>
-                            Shut Down...
-                        </div>
+                {isOpen && (
+                    <div style={styles.dropdownMenu}>
+                        {options.map((option, idx) => (
+                            <div 
+                                key={idx} 
+                                style={styles.dropdownMenuItem} 
+                                onClick={() => handleMenuAction(option)}
+                                onMouseEnter={(e) => {
+                                    (e.target as HTMLElement).style.backgroundColor = Colors.blue;
+                                }}
+                                onMouseLeave={(e) => {
+                                    (e.target as HTMLElement).style.backgroundColor = 'transparent';
+                                }}
+                            >
+                                {option}
+                            </div>
+                        ))}
                     </div>
                 )}
+            </div>
+        );
+    };
+
+    return (
+        <div style={styles.menuBar} ref={menuRef}>
+            <div style={styles.leftSection}>
+                {renderMenu('apple', <span style={{ fontSize: 16 }}></span>, true)}
                 
                 <div style={Object.assign({}, styles.menuItem, { fontWeight: 700 })}>
                     {activeApp || 'Finder'}
                 </div>
-                <div style={styles.menuItem}>File</div>
-                <div style={styles.menuItem}>Edit</div>
-                <div style={styles.menuItem}>View</div>
-                <div style={styles.menuItem}>Go</div>
-                <div style={styles.menuItem}>Window</div>
-                <div style={styles.menuItem}>Help</div>
+                
+                {renderMenu('File', 'File')}
+                {renderMenu('Edit', 'Edit')}
+                {renderMenu('View', 'View')}
+                {renderMenu('Go', 'Go')}
+                {renderMenu('Window', 'Window')}
+                {renderMenu('Help', 'Help')}
             </div>
             
             <div style={styles.rightSection}>
@@ -121,10 +195,10 @@ const styles: StyleSheetCSS = {
     menuItemActive: {
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
     },
-    appleMenu: {
+    dropdownMenu: {
         position: 'absolute',
         top: 24,
-        left: 10,
+        left: 0,
         backgroundColor: 'rgba(30, 30, 30, 0.85)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
@@ -134,11 +208,12 @@ const styles: StyleSheetCSS = {
         minWidth: 200,
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
     },
-    appleMenuItem: {
+    dropdownMenuItem: {
         padding: '4px 12px',
         cursor: 'pointer',
         borderRadius: 4,
         color: Colors.white,
+        transition: 'background-color 0.1s',
     },
 };
 

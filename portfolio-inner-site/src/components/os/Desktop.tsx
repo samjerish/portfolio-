@@ -171,6 +171,57 @@ const Desktop: React.FC<DesktopProps> = (props) => {
         [setWindows, getHighestZIndex]
     );
 
+    useEffect(() => {
+        const handleMenuAction = (e: any) => {
+            const action = e.detail?.action;
+            const highestKey = Object.keys(windows).reduce((highest: string | null, key) => {
+                if (!highest) return key;
+                return windows[key].zIndex > windows[highest].zIndex ? key : highest;
+            }, null);
+
+            switch (action) {
+                case 'Close Window':
+                    if (highestKey) removeWindow(highestKey);
+                    break;
+                case 'Minimize':
+                    if (highestKey) minimizeWindow(highestKey);
+                    break;
+                case 'Zoom':
+                    // Zoom implies maximize. We can trigger a mock zoom by interacting, but we'd need to call maximize inside Window.
+                    // For now, if we don't have a direct hook to the Window component's internal state, we alert.
+                    alert('Zoom triggered! (Functionality requires deeper integration)');
+                    break;
+                case 'My Showcase':
+                    shortcuts.find(s => s.shortcutName === 'My Showcase')?.onOpen();
+                    break;
+                case 'Credits':
+                    shortcuts.find(s => s.shortcutName === 'Credits')?.onOpen();
+                    break;
+                case 'Computer':
+                    alert('Computer folder is not available.');
+                    break;
+                case 'Toggle Full Screen':
+                    const iframe = document.getElementById('computer-screen');
+                    if (iframe) {
+                        if (!document.fullscreenElement) {
+                            iframe.requestFullscreen().catch(err => console.error(err));
+                        } else {
+                            document.exitFullscreen().catch(err => console.error(err));
+                        }
+                    }
+                    break;
+                case 'New Window':
+                    alert('New Window triggered!');
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        window.addEventListener('macOS_menu_action', handleMenuAction);
+        return () => window.removeEventListener('macOS_menu_action', handleMenuAction);
+    }, [windows, removeWindow, minimizeWindow, shortcuts]);
+
     const startShutdown = useCallback(() => {
         setTimeout(() => {
             setShutdown(true);
