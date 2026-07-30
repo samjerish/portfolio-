@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Colors from '../../constants/colors';
 import ShowcaseExplorer from '../applications/ShowcaseExplorer';
 import ShutdownSequence from './ShutdownSequence';
-// import ThisComputer from '../applications/ThisComputer';
 import Toolbar from './Toolbar';
 import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import { IconName } from '../../assets/icons';
 import Credits from '../applications/Credits';
+import MenuBar from './MenuBar';
 
 export interface DesktopProps {}
 
@@ -20,12 +20,6 @@ const APPLICATIONS: {
         component: React.FC<ExtendedWindowAppProps<any>>;
     };
 } = {
-    // computer: {
-    //     key: 'computer',
-    //     name: 'This Computer',
-    //     shortcutIcon: 'computerBig',
-    //     component: ThisComputer,
-    // },
     showcase: {
         key: 'showcase',
         name: 'My Showcase',
@@ -47,6 +41,7 @@ const Desktop: React.FC<DesktopProps> = (props) => {
 
     const [shutdown, setShutdown] = useState(false);
     const [numShutdowns, setNumShutdowns] = useState(1);
+    const [activeApp, setActiveApp] = useState<string | undefined>(undefined);
     
     const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -129,13 +124,21 @@ const Desktop: React.FC<DesktopProps> = (props) => {
 
     const getHighestZIndex = useCallback((): number => {
         let highestZIndex = 0;
+        let highestKey: string | undefined = undefined;
         Object.keys(windows).forEach((key) => {
             const window = windows[key];
             if (window) {
-                if (window.zIndex > highestZIndex)
+                if (window.zIndex > highestZIndex) {
                     highestZIndex = window.zIndex;
+                    highestKey = key;
+                }
             }
         });
+        if (highestKey && windows[highestKey]) {
+            setActiveApp(windows[highestKey].name);
+        } else {
+            setActiveApp(undefined);
+        }
         return highestZIndex;
     }, [windows]);
 
@@ -193,6 +196,7 @@ const Desktop: React.FC<DesktopProps> = (props) => {
 
     return !shutdown ? (
         <div style={styles.desktop}>
+            <MenuBar shutdown={startShutdown} activeApp={activeApp} />
             {/* For each window in windows, loop over and render  */}
             {Object.keys(windows).map((key) => {
                 const element = windows[key].component;
@@ -272,7 +276,9 @@ const styles: StyleSheetCSS = {
     desktop: {
         minHeight: '100%',
         flex: 1,
-        backgroundColor: Colors.turquoise,
+        background: Colors.macOSBackground,
+        position: 'relative',
+        overflow: 'hidden',
     },
     shutdown: {
         minHeight: '100%',
@@ -284,8 +290,8 @@ const styles: StyleSheetCSS = {
     },
     shortcuts: {
         position: 'absolute',
-        top: 16,
-        left: 6,
+        top: 40,
+        right: 16,
     },
     minimized: {
         pointerEvents: 'none',

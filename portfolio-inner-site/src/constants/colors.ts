@@ -7,6 +7,15 @@ const colors = {
     blue: '#0000a3',
     darkBlue: '#0000aa',
     red: '#ff0000',
+    macOSBackground: 'linear-gradient(135deg, #1c1e26 0%, #0d0f12 100%)', // modern dark background
+    macOSMenuBlur: 'rgba(255, 255, 255, 0.1)',
+    macOSMenuBorder: 'rgba(255, 255, 255, 0.2)',
+    trafficLightRed: '#FF605C',
+    trafficLightYellow: '#FFBD44',
+    trafficLightGreen: '#00CA4E',
+    macOSWindowLight: 'rgba(255, 255, 255, 0.95)',
+    macOSWindowDark: 'rgba(30, 30, 30, 0.95)',
+    macOSDockBlur: 'rgba(255, 255, 255, 0.2)',
 } as const;
 
 export type ColorName = keyof typeof colors;

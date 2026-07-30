@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IconName } from '../../assets/icons';
-import colors from '../../constants/colors';
 import Colors from '../../constants/colors';
-import Icon from '../general/Icon';
-import Button from './Button';
 import DragIndicator from './DragIndicator';
 import ResizeIndicator from './ResizeIndicator';
 
@@ -16,12 +13,13 @@ export interface WindowProps {
     top: number;
     left: number;
     windowTitle?: string;
-    bottomLeftText?: string;
+    bottomLeftText?: string; // Kept for compatibility but might not be shown
     rainbow?: boolean;
     windowBarColor?: string;
-    windowBarIcon?: IconName;
+    windowBarIcon?: IconName; // Kept for compatibility
     onWidthChange?: (width: number) => void;
     onHeightChange?: (height: number) => void;
+    children?: React.ReactNode;
 }
 
 const Window: React.FC<WindowProps> = (props) => {
@@ -70,15 +68,15 @@ const Window: React.FC<WindowProps> = (props) => {
     const onResize = ({ clientX, clientY }: any) => {
         const curWidth = clientX - left;
         const curHeight = clientY - top;
-        if (curWidth > 520) resizeRef.current.style.width = `${curWidth}px`;
+        if (curWidth > 320) resizeRef.current.style.width = `${curWidth}px`;
         if (curHeight > 220) resizeRef.current.style.height = `${curHeight}px`;
         resizeRef.current.style.opacity = 1;
     };
 
     const stopResize = () => {
         setIsResizing(false);
-        setWidth(resizeRef.current.style.width);
-        setHeight(resizeRef.current.style.height);
+        setWidth(parseFloat(resizeRef.current.style.width));
+        setHeight(parseFloat(resizeRef.current.style.height));
         resizeRef.current.style.opacity = 0;
         window.removeEventListener('mousemove', onResize, false);
         window.removeEventListener('mouseup', stopResize, false);
@@ -104,7 +102,6 @@ const Window: React.FC<WindowProps> = (props) => {
 
     const stopDrag = ({ clientX, clientY }: any) => {
         setIsDragging(false);
-        // dragRef.current.style.opacity = 0;
         const { x, y } = getXYFromDragProps(clientX, clientY);
         setTop(y);
         setLeft(x);
@@ -131,18 +128,22 @@ const Window: React.FC<WindowProps> = (props) => {
 
     useEffect(() => {
         props.onWidthChange && props.onWidthChange(contentWidth);
-    }, [props.onWidthChange, contentWidth]); // eslint-disable-line
+    }, [props.onWidthChange, contentWidth]);
 
     useEffect(() => {
         props.onHeightChange && props.onHeightChange(contentHeight);
-    }, [props.onHeightChange, contentHeight]); // eslint-disable-line
+    }, [props.onHeightChange, contentHeight]);
 
     useEffect(() => {
-        setContentWidth(contentRef.current.getBoundingClientRect().width);
+        if (contentRef.current) {
+            setContentWidth(contentRef.current.getBoundingClientRect().width);
+        }
     }, [width]);
 
     useEffect(() => {
-        setContentHeight(contentRef.current.getBoundingClientRect().height);
+        if (contentRef.current) {
+            setContentHeight(contentRef.current.getBoundingClientRect().height);
+        }
     }, [height]);
 
     const maximize = () => {
@@ -160,8 +161,8 @@ const Window: React.FC<WindowProps> = (props) => {
                 left,
             });
             setWidth(window.innerWidth);
-            setHeight(window.innerHeight - 32);
-            setTop(0);
+            setHeight(window.innerHeight - 80); // leave space for dock and menu
+            setTop(24); // leave space for menu bar
             setLeft(0);
             setIsMaximized(true);
         }
@@ -197,131 +198,53 @@ const Window: React.FC<WindowProps> = (props) => {
                     height,
                     top,
                     left,
+                    boxShadow: windowActive
+                        ? '0 20px 60px rgba(0, 0, 0, 0.4)'
+                        : '0 10px 30px rgba(0, 0, 0, 0.2)',
                 })}
                 ref={windowRef}
             >
-                <div style={styles.windowBorderOuter}>
-                    <div style={styles.windowBorderInner}>
+                <div
+                    style={styles.dragHitbox}
+                    onMouseDown={startDrag}
+                ></div>
+                <div
+                    style={Object.assign(
+                        {},
+                        styles.topBar,
+                        !windowActive && { opacity: 0.7 }
+                    )}
+                >
+                    <div style={styles.windowTopButtons}>
                         <div
-                            style={styles.dragHitbox}
-                            onMouseDown={startDrag}
-                        ></div>
+                            style={{ ...styles.trafficLight, backgroundColor: Colors.trafficLightRed }}
+                            onClick={props.closeWindow}
+                        />
                         <div
-                            className={props.rainbow ? 'rainbow-wrapper' : ''}
-                            style={Object.assign(
-                                {},
-                                styles.topBar,
-                                props.windowBarColor && {
-                                    backgroundColor: props.windowBarColor,
-                                },
-                                !windowActive && {
-                                    backgroundColor: Colors.darkGray,
-                                }
-                            )}
-                        >
-                            <div style={styles.windowHeader}>
-                                {props.windowBarIcon ? (
-                                    <Icon
-                                        icon={props.windowBarIcon}
-                                        style={Object.assign(
-                                            {},
-                                            styles.windowBarIcon,
-                                            !windowActive && { opacity: 0.5 }
-                                        )}
-                                        size={16}
-                                    />
-                                ) : (
-                                    <div style={{ width: 16 }} />
-                                )}
-                                <p
-                                    style={
-                                        windowActive
-                                            ? {}
-                                            : { color: colors.lightGray }
-                                    }
-                                    className="showcase-header"
-                                >
-                                    {props.windowTitle}
-                                </p>
-                            </div>
-                            <div style={styles.windowTopButtons}>
-                                <Button
-                                    icon="minimize"
-                                    onClick={props.minimizeWindow}
-                                />
-                                <Button icon="maximize" onClick={maximize} />
-                                <div style={{ paddingLeft: 2 }}>
-                                    <Button
-                                        icon="close"
-                                        onClick={props.closeWindow}
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                            style={{ ...styles.trafficLight, backgroundColor: Colors.trafficLightYellow }}
+                            onClick={props.minimizeWindow}
+                        />
                         <div
-                            style={Object.assign({}, styles.contentOuter, {
-                                // zIndex: isDragging || isResizing ? 0 : 100,
-                            })}
-                        >
-                            <div style={styles.contentInner}>
-                                <div style={styles.content} ref={contentRef}>
-                                    {props.children}
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            onMouseDown={startResize}
-                            style={styles.resizeHitbox}
-                        ></div>
-                        <div style={styles.bottomBar}>
-                            <div
-                                style={Object.assign({}, styles.insetBorder, {
-                                    flex: 5 / 7,
-                                    alignItems: 'center',
-                                })}
-                            >
-                                <p
-                                    style={{
-                                        fontSize: 12,
-                                        marginLeft: 4,
-                                        fontFamily: 'MSSerif',
-                                    }}
-                                >
-                                    {props.bottomLeftText}
-                                </p>
-                            </div>
-                            <div
-                                style={Object.assign(
-                                    {},
-                                    styles.insetBorder,
-                                    styles.bottomSpacer
-                                )}
-                            />
-                            <div
-                                style={Object.assign(
-                                    {},
-                                    styles.insetBorder,
-                                    styles.bottomSpacer
-                                )}
-                            />
-                            <div
-                                style={Object.assign(
-                                    {},
-                                    styles.insetBorder,
-                                    styles.bottomResizeContainer
-                                )}
-                            >
-                                <div
-                                    style={{
-                                        alignItems: 'flex-end',
-                                    }}
-                                >
-                                    <Icon size={12} icon="windowResize" />
-                                </div>
-                            </div>
-                        </div>
+                            style={{ ...styles.trafficLight, backgroundColor: Colors.trafficLightGreen }}
+                            onClick={maximize}
+                        />
+                    </div>
+                    <div style={styles.windowHeader}>
+                        <p style={Object.assign({}, styles.titleText, !windowActive && { color: Colors.darkGray })}>
+                            {props.windowTitle}
+                        </p>
+                    </div>
+                    <div style={styles.rightSpacer} />
+                </div>
+                <div style={styles.contentOuter}>
+                    <div style={styles.content} ref={contentRef}>
+                        {props.children}
                     </div>
                 </div>
+                <div
+                    onMouseDown={startResize}
+                    style={styles.resizeHitbox}
+                ></div>
             </div>
 
             <div
@@ -371,112 +294,101 @@ const Window: React.FC<WindowProps> = (props) => {
 };
 
 const styles: StyleSheetCSS = {
-    window: {
-        backgroundColor: Colors.lightGray,
+    container: {
         position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none', // Let clicks fall through to desktop
+    },
+    window: {
+        backgroundColor: Colors.macOSWindowLight,
+        backdropFilter: 'blur(40px)',
+        WebkitBackdropFilter: 'blur(40px)',
+        position: 'absolute',
+        borderRadius: 12,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        border: '1px solid rgba(255,255,255,0.3)',
+        pointerEvents: 'auto', // Catch clicks on the window
+        transition: 'box-shadow 0.2s',
     },
     dragHitbox: {
         position: 'absolute',
-        width: 'calc(100% - 70px)',
-        height: 48,
+        width: '100%',
+        height: 36,
         zIndex: 10000,
-        top: -8,
-        left: -4,
-        cursor: 'move',
-    },
-    windowBorderOuter: {
-        border: `1px solid ${Colors.black}`,
-        borderTopColor: colors.lightGray,
-        borderLeftColor: colors.lightGray,
-        flex: 1,
-    },
-    windowBorderInner: {
-        border: `1px solid ${Colors.darkGray}`,
-        borderTopColor: colors.white,
-        borderLeftColor: colors.white,
-        flex: 1,
-        padding: 2,
-
-        flexDirection: 'column',
+        top: 0,
+        left: 0,
+        cursor: 'default', // macOS uses default cursor for drag
     },
     resizeHitbox: {
         position: 'absolute',
-        width: 60,
-        height: 60,
-        bottom: -20,
-        right: -20,
+        width: 16,
+        height: 16,
+        bottom: 0,
+        right: 0,
         cursor: 'nwse-resize',
+        zIndex: 10001,
     },
     topBar: {
-        backgroundColor: Colors.blue,
         width: '100%',
-        height: 20,
-
+        height: 36,
+        display: 'flex',
         alignItems: 'center',
-        paddingRight: 2,
+        padding: '0 12px',
         boxSizing: 'border-box',
+        borderBottom: '1px solid rgba(0,0,0,0.1)',
+        backgroundColor: 'rgba(255,255,255,0.4)', // Slightly more opaque for the header
     },
     contentOuter: {
-        border: `1px solid ${Colors.white}`,
-        borderTopColor: colors.darkGray,
-        borderLeftColor: colors.darkGray,
         flexGrow: 1,
-
-        marginTop: 8,
-        marginBottom: 8,
-        overflow: 'hidden',
-    },
-    contentInner: {
-        border: `1px solid ${Colors.lightGray}`,
-        borderTopColor: colors.black,
-        borderLeftColor: colors.black,
-        flex: 1,
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
         overflow: 'hidden',
     },
     content: {
         flex: 1,
-
         position: 'relative',
-        // overflow: 'scroll',
         overflowX: 'hidden',
+        overflowY: 'auto', // Allow scrolling
         backgroundColor: Colors.white,
     },
-    bottomBar: {
-        flexShrink: 1,
-        width: '100%',
-        height: 20,
-    },
-    bottomSpacer: {
-        width: 16,
-        marginLeft: 2,
-    },
-    insetBorder: {
-        border: `1px solid ${Colors.white}`,
-        borderTopColor: colors.darkGray,
-        borderLeftColor: colors.darkGray,
-        padding: 2,
-    },
-    bottomResizeContainer: {
-        flex: 2 / 7,
-
-        justifyContent: 'flex-end',
-        padding: 0,
-        marginLeft: 2,
-    },
     windowTopButtons: {
-        // zIndex: 10000,
-
+        display: 'flex',
         alignItems: 'center',
+        gap: 8,
+        width: 60, // Fixed width to help center the title
+        zIndex: 10001, // Above drag hitbox
+    },
+    trafficLight: {
+        width: 12,
+        height: 12,
+        borderRadius: '50%',
+        cursor: 'pointer',
     },
     windowHeader: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        pointerEvents: 'none', // Allow dragging through title
     },
-    windowBarIcon: {
-        paddingLeft: 4,
-        paddingRight: 4,
+    titleText: {
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 13,
+        fontWeight: 600,
+        color: '#333',
+        margin: 0,
+        padding: 0,
+        userSelect: 'none',
     },
+    rightSpacer: {
+        width: 60, // Balance the left buttons for perfect centering
+    }
 };
 
 export default Window;

@@ -6,7 +6,7 @@ export interface ResumeDownloadProps {
 }
 
 const ResumeDownload: React.FC<ResumeDownloadProps> = ({ altText }) => {
-    const Resume = 'https://drive.google.com/file/d/1GHR7zz6k51wn_LIt4UnoYSVmmbzLQS2l/view?usp=share_link';
+    const Resume = 'https://drive.google.com/file/d/1duhzJIp2jMdn0YAW8BeHyFSciiTzQAii/view?usp=share_link';
 
     return (
         <div style={styles.resumeContainer}>
