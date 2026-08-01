@@ -218,8 +218,8 @@ const Desktop: React.FC<DesktopProps> = (props) => {
             }
         };
 
-        window.addEventListener('macOS_menu_action', handleMenuAction);
-        return () => window.removeEventListener('macOS_menu_action', handleMenuAction);
+        window.addEventListener('windows_menu_action', handleMenuAction);
+        return () => window.removeEventListener('windows_menu_action', handleMenuAction);
     }, [windows, removeWindow, minimizeWindow, shortcuts]);
 
     const startShutdown = useCallback(() => {
@@ -247,28 +247,6 @@ const Desktop: React.FC<DesktopProps> = (props) => {
 
     return !shutdown ? (
         <div style={styles.desktop}>
-            <MenuBar shutdown={startShutdown} activeApp={activeApp} />
-            {/* For each window in windows, loop over and render  */}
-            {Object.keys(windows).map((key) => {
-                const element = windows[key].component;
-                if (!element) return <div key={`win-${key}`}></div>;
-                return (
-                    <div
-                        key={`win-${key}`}
-                        style={Object.assign(
-                            {},
-                            { zIndex: windows[key].zIndex },
-                            windows[key].minimized && styles.minimized
-                        )}
-                    >
-                        {React.cloneElement(element, {
-                            key,
-                            onInteract: () => onWindowInteract(key),
-                            onClose: () => removeWindow(key),
-                        })}
-                    </div>
-                );
-            })}
             <div style={styles.shortcuts}>
                 {shortcuts.map((shortcut, i) => {
                     return (
@@ -287,6 +265,30 @@ const Desktop: React.FC<DesktopProps> = (props) => {
                     );
                 })}
             </div>
+            {/* Render open windows */}
+            {Object.keys(windows).map((key) => {
+                const element = windows[key].component;
+                if (!element) return <div key={`win-${key}`}></div>;
+                return (
+                    <div
+                        key={`win-${key}`}
+                        style={Object.assign(
+                            {},
+                            { zIndex: windows[key].zIndex },
+                            windows[key].minimized && styles.minimized
+                        )}
+                    >
+                        {React.cloneElement(element, {
+                            key,
+                            onInteract: () => onWindowInteract(key),
+                            onClose: () => removeWindow(key),
+                            onMinimize: () => minimizeWindow(key),
+                        })}
+                    </div>
+                );
+            })}
+            {/* Windows 98 taskbar — Start button + open windows */}
+            <MenuBar shutdown={startShutdown} activeApp={activeApp} />
             <Toolbar
                 windows={windows}
                 toggleMinimize={toggleMinimize}
@@ -327,7 +329,7 @@ const styles: StyleSheetCSS = {
     desktop: {
         minHeight: '100%',
         flex: 1,
-        background: Colors.macOSBackground,
+        backgroundColor: '#008080',
         position: 'relative',
         overflow: 'hidden',
     },
@@ -344,8 +346,8 @@ const styles: StyleSheetCSS = {
     },
     shortcuts: {
         position: 'absolute',
-        top: 30,
-        right: 20,
+        top: 10,
+        left: 10,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

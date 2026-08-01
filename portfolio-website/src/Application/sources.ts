@@ -1,11 +1,11 @@
 const sources: Resource[] = [
     {
-        name: 'computerSetupModel',
+        name: 'computerModel',
         type: 'gltfModel',
         path: 'models/Computer/computer_setup.glb',
     },
     {
-        name: 'computerSetupTexture',
+        name: 'computerTexture',
         type: 'texture',
         path: 'models/Computer/baked_computer.jpg',
     },

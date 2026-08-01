@@ -18,7 +18,7 @@ const Education: React.FC<EducationProps> = (props) => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <h1 style={{ fontSize: '2.2rem', margin: 0 }}>Karunya Institute of Technology and Sciences</h1>
                         <h3 style={{ margin: 0, fontWeight: 500, opacity: 0.9 }}>B.Tech in Computer Science and Engineering (Artificial Intelligence and Machine Learning)</h3>
-                        <p style={{ margin: 0, fontWeight: 'bold', opacity: 0.7 }}>2024 - 2028</p>
+                        <p style={{ margin: 0, fontWeight: 'bold', opacity: 0.7 }}>2026 - 2028</p>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@ const Education: React.FC<EducationProps> = (props) => {
                 <h3>Awards</h3>
                 <br />
                 <p style={{ textAlign: 'justify', lineHeight: 1.6, marginBottom: 16 }}>
-                    Secured 2nd Place in the Ideathon Competition at Karunya University (2024) by presenting an AI-driven solution to enhance tribal farming practices.
+                    Secured 2nd Place in the Ideathon Competition at Karunya University (2026) by presenting an AI-driven solution to enhance tribal farming practices.
                 </p>
                 <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', marginTop: 16, alignItems: 'flex-start' }}>
                     <div style={{ flex: '1 1 300px', maxWidth: '45%' }}>

@@ -55,6 +55,27 @@ export default class MonitorScreen extends EventEmitter {
         const maxOffset = this.createTextureLayers();
         this.createEnclosingPlanes(maxOffset);
         this.createPerspectiveDimmer(maxOffset);
+
+        if (this.application.debug.active) {
+            this.debugFolder = this.application.debug.ui.addFolder('MonitorScreen');
+            this.debugFolder.add(this.position, 'x').min(-2000).max(2000).step(1).name('posX').onChange(() => this.updatePlanes());
+            this.debugFolder.add(this.position, 'y').min(-2000).max(2000).step(1).name('posY').onChange(() => this.updatePlanes());
+            this.debugFolder.add(this.position, 'z').min(-2000).max(2000).step(1).name('posZ').onChange(() => this.updatePlanes());
+            
+            this.debugFolder.add(this.rotation, 'x').min(-Math.PI).max(Math.PI).step(0.01).name('rotX').onChange(() => this.updatePlanes());
+            this.debugFolder.add(this.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.01).name('rotY').onChange(() => this.updatePlanes());
+            this.debugFolder.add(this.rotation, 'z').min(-Math.PI).max(Math.PI).step(0.01).name('rotZ').onChange(() => this.updatePlanes());
+        }
+    }
+
+    // A helper method for updating CSS3D object transforms when tweaking in GUI
+    updatePlanes() {
+        this.cssScene.children.forEach(c => {
+            c.position.copy(this.position);
+            c.rotation.copy(this.rotation);
+        });
+        // We aren't fully live updating all texture layers here for simplicity, 
+        // just the iframe is enough to align the screen!
     }
 
     createLogoOverlay() {
@@ -251,7 +272,7 @@ export default class MonitorScreen extends EventEmitter {
         // Set iframe attributes
         const urlParams = new URLSearchParams(window.location.search);
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || urlParams.has('dev')) {
-            iframe.src = 'http://localhost:3000/';
+            iframe.src = 'http://localhost:3005/';
         } else {
             iframe.src = 'inner-site/index.html';
         }

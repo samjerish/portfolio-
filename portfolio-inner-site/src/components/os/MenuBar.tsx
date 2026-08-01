@@ -1,219 +1,227 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Colors from '../../constants/colors';
-import { Icon } from '../general';
 
 export interface MenuBarProps {
     shutdown: () => void;
     activeApp?: string;
 }
 
-const MENUS = {
-    apple: ['About This Mac', 'Shut Down...'],
-    File: ['New Window', 'Close Window'],
-    Edit: ['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'Select All'],
-    View: ['Toggle Full Screen'],
-    Go: ['My Showcase', 'Credits', 'Computer'],
-    Window: ['Minimize', 'Zoom'],
-    Help: ['Portfolio Help'],
-};
-
 const MenuBar: React.FC<MenuBarProps> = ({ shutdown, activeApp }) => {
     const getTime = () => {
         const date = new Date();
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        
-        const dayName = days[date.getDay()];
-        const month = months[date.getMonth()];
-        const day = date.getDate();
-        
         let hours = date.getHours();
         let minutes = date.getMinutes();
-        let amPm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-        let mins = minutes < 10 ? '0' + minutes : minutes;
-        
-        return `${dayName} ${month} ${day}  ${hours}:${mins} ${amPm}`;
+        const amPm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        const mins = minutes < 10 ? '0' + minutes : '' + minutes;
+        return `${hours}:${mins} ${amPm}`;
     };
 
     const [time, setTime] = useState(getTime());
-    const [activeMenu, setActiveMenu] = useState<string | null>(null);
-    const menuRef = useRef<HTMLDivElement>(null);
+    const [startMenuOpen, setStartMenuOpen] = useState(false);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setTime(getTime());
-        }, 10000);
+        const interval = setInterval(() => setTime(getTime()), 30000);
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setActiveMenu(null);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const handleMenuAction = (action: string) => {
-        setActiveMenu(null);
+    const dispatchMenuAction = (action: string) => {
+        setStartMenuOpen(false);
         if (action === 'Shut Down...') {
             shutdown();
-            return;
-        }
-        
-        if (['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'Select All'].includes(action)) {
-            // Mock functions for Edit menu
-            return;
-        }
-
-        if (action === 'About This Mac' || action === 'Portfolio Help') {
-            alert(`SAM JERISH D PORTFOLIO OS\nVersion 1.0\n\nA React-based macOS clone.`);
-            return;
-        }
-        
-        // Dispatch event for Desktop to handle
-        window.dispatchEvent(new CustomEvent('macOS_menu_action', { detail: { action } }));
-    };
-
-    const toggleMenu = (menuName: string) => {
-        if (activeMenu === menuName) {
-            setActiveMenu(null);
         } else {
-            setActiveMenu(menuName);
+            window.dispatchEvent(new CustomEvent('windows_menu_action', { detail: { action } }));
         }
-    };
-
-    const renderMenu = (menuName: string, label: string | JSX.Element, isApple: boolean = false) => {
-        const isOpen = activeMenu === menuName;
-        const options = MENUS[menuName as keyof typeof MENUS] || [];
-
-        return (
-            <div style={{ position: 'relative', height: '100%' }}>
-                <div 
-                    style={Object.assign({}, styles.menuItem, isOpen && styles.menuItemActive)}
-                    onClick={() => toggleMenu(menuName)}
-                >
-                    {label}
-                </div>
-                {isOpen && (
-                    <div style={styles.dropdownMenu}>
-                        {options.map((option, idx) => (
-                            <div 
-                                key={idx} 
-                                style={styles.dropdownMenuItem} 
-                                onClick={() => handleMenuAction(option)}
-                                onMouseEnter={(e) => {
-                                    (e.target as HTMLElement).style.backgroundColor = Colors.blue;
-                                }}
-                                onMouseLeave={(e) => {
-                                    (e.target as HTMLElement).style.backgroundColor = 'transparent';
-                                }}
-                            >
-                                {option}
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        );
     };
 
     return (
-        <div style={styles.menuBar} ref={menuRef}>
-            <div style={styles.leftSection}>
-                {renderMenu('apple', <span style={{ fontSize: 16 }}></span>, true)}
+        <div style={styles.taskbar}>
+            {/* Start button & Menu */}
+            <div style={{ position: 'relative' }}>
+                <button
+                    style={Object.assign({}, styles.startButton, startMenuOpen && styles.startButtonActive)}
+                    onClick={() => setStartMenuOpen(!startMenuOpen)}
+                >
+                    <img
+                        src="https://win98icons.alexmeub.com/icons/png/windows-0.png"
+                        alt="start"
+                        style={{ width: 16, height: 16, marginRight: 4 }}
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                    <strong>Start</strong>
+                </button>
                 
-                <div style={Object.assign({}, styles.menuItem, { fontWeight: 700 })}>
-                    {activeApp || 'Finder'}
-                </div>
-                
-                {renderMenu('File', 'File')}
-                {renderMenu('Edit', 'Edit')}
-                {renderMenu('View', 'View')}
-                {renderMenu('Go', 'Go')}
-                {renderMenu('Window', 'Window')}
-                {renderMenu('Help', 'Help')}
+                {startMenuOpen && (
+                    <div style={styles.startMenu}>
+                        <div style={styles.startMenuSideBar}>
+                            <span style={styles.startMenuSideBarText}>
+                                <strong>Windows</strong> 98
+                            </span>
+                        </div>
+                        <div style={styles.startMenuOptions}>
+                            <div style={styles.startMenuItem} onClick={() => dispatchMenuAction('My Showcase')}>
+                                <img src="https://win98icons.alexmeub.com/icons/png/directory_explorer-5.png" alt="Showcase" style={styles.startMenuIcon} />
+                                My Showcase
+                            </div>
+                            <div style={styles.startMenuItem} onClick={() => dispatchMenuAction('Credits')}>
+                                <img src="https://win98icons.alexmeub.com/icons/png/notepad-5.png" alt="Credits" style={styles.startMenuIcon} />
+                                Credits
+                            </div>
+                            <div style={styles.startMenuDivider} />
+                            <div style={styles.startMenuItem} onClick={() => dispatchMenuAction('Toggle Full Screen')}>
+                                <img src="https://win98icons.alexmeub.com/icons/png/monitor_windows-0.png" alt="Full Screen" style={styles.startMenuIcon} />
+                                Full Screen Mode
+                            </div>
+                            <div style={styles.startMenuDivider} />
+                            <div style={styles.startMenuItem} onClick={() => dispatchMenuAction('Shut Down...')}>
+                                <img src="https://win98icons.alexmeub.com/icons/png/shut_down_normal-2.png" alt="Shut down" style={styles.startMenuIcon} />
+                                Shut Down...
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
-            
-            <div style={styles.rightSection}>
-                <div style={styles.menuItem}>
-                    <Icon icon="volumeOn" size={14} style={{ filter: 'invert(1)' }} />
-                </div>
-                <div style={styles.menuItem}>
-                    {time}
-                </div>
+
+            {/* Divider */}
+            <div style={styles.divider} />
+
+            {/* Active app label */}
+            {activeApp && (
+                <div style={styles.activeApp}>{activeApp}</div>
+            )}
+
+            {/* Spacer */}
+            <div style={{ flex: 1 }} />
+
+            {/* System tray clock */}
+            <div style={styles.tray}>
+                <span style={styles.clock}>{time}</span>
             </div>
         </div>
     );
 };
 
 const styles: StyleSheetCSS = {
-    menuBar: {
+    taskbar: {
         position: 'absolute',
-        top: 0,
+        bottom: 0,
         left: 0,
         right: 0,
-        height: 24,
-        backgroundColor: Colors.macOSMenuBlur,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: `1px solid ${Colors.macOSMenuBorder}`,
+        height: 28,
+        backgroundColor: '#c0c0c0',
+        boxShadow: 'inset 0 1px 0 #ffffff, inset 0 -1px 0 #808080',
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '0 10px',
-        color: Colors.white,
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-        fontSize: 13,
-        fontWeight: 500,
+        padding: '0 2px',
         zIndex: 100000,
         userSelect: 'none',
+        gap: 2,
     },
-    leftSection: {
+    startButton: {
         display: 'flex',
         alignItems: 'center',
-        height: '100%',
-    },
-    rightSection: {
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%',
-    },
-    menuItem: {
-        padding: '0 10px',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
+        height: 22,
+        padding: '0 8px',
+        backgroundColor: '#c0c0c0',
+        border: 'none',
+        boxShadow: 'inset -1px -1px #808080, inset 1px 1px #ffffff, inset -2px -2px #404040, inset 2px 2px #dfdfdf',
         cursor: 'pointer',
-        transition: 'background-color 0.1s',
-        borderRadius: 4,
+        fontFamily: 'MSSerif, "MS Sans Serif", sans-serif',
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#000000',
     },
-    menuItemActive: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    divider: {
+        width: 1,
+        height: 20,
+        backgroundColor: '#808080',
+        boxShadow: '1px 0 0 #ffffff',
+        margin: '0 2px',
     },
-    dropdownMenu: {
+    activeApp: {
+        height: 22,
+        padding: '0 6px',
+        backgroundColor: '#c0c0c0',
+        boxShadow: 'inset 1px 1px #808080, inset -1px -1px #ffffff',
+        display: 'flex',
+        alignItems: 'center',
+        fontFamily: 'MSSerif, "MS Sans Serif", sans-serif',
+        fontSize: 11,
+        color: '#000000',
+    },
+    tray: {
+        height: 22,
+        padding: '0 8px',
+        backgroundColor: '#c0c0c0',
+        boxShadow: 'inset 1px 1px #808080, inset -1px -1px #ffffff',
+        display: 'flex',
+        alignItems: 'center',
+    },
+    clock: {
+        fontFamily: 'MSSerif, "MS Sans Serif", sans-serif',
+        fontSize: 11,
+        color: '#000000',
+    },
+    startButtonActive: {
+        boxShadow: 'inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #404040',
+        backgroundColor: '#d4d0c8',
+        paddingTop: 2,
+        paddingLeft: 10,
+    },
+    startMenu: {
         position: 'absolute',
-        top: 24,
+        bottom: 28,
         left: 0,
-        backgroundColor: 'rgba(30, 30, 30, 0.85)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: `1px solid rgba(255, 255, 255, 0.1)`,
-        borderRadius: 6,
-        padding: 4,
-        minWidth: 200,
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+        width: 220,
+        backgroundColor: '#c0c0c0',
+        boxShadow: 'inset -1px -1px #404040, inset 1px 1px #dfdfdf, inset -2px -2px #000000, inset 2px 2px #ffffff',
+        display: 'flex',
+        flexDirection: 'row',
+        zIndex: 100002,
     },
-    dropdownMenuItem: {
-        padding: '4px 12px',
+    startMenuSideBar: {
+        width: 24,
+        background: 'linear-gradient(180deg, #000080 0%, #000000 100%)',
+        display: 'flex',
+        alignItems: 'flex-end',
+        paddingBottom: 8,
+    },
+    startMenuSideBarText: {
+        color: '#c0c0c0',
+        fontFamily: 'Arial, sans-serif',
+        fontSize: 16,
+        transform: 'rotate(-90deg)',
+        transformOrigin: 'left bottom',
+        whiteSpace: 'nowrap',
+        marginLeft: 18,
+        marginBottom: 10,
+        letterSpacing: 1,
+    },
+    startMenuOptions: {
+        flex: 1,
+        padding: 2,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    startMenuItem: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px 12px 8px 8px',
+        fontFamily: 'MSSerif, "MS Sans Serif", sans-serif',
+        fontSize: 12,
+        color: '#000000',
         cursor: 'pointer',
-        borderRadius: 4,
-        color: Colors.white,
-        transition: 'background-color 0.1s',
+    },
+    startMenuIcon: {
+        width: 32,
+        height: 32,
+        marginRight: 10,
+    },
+    startMenuDivider: {
+        height: 1,
+        backgroundColor: '#808080',
+        borderBottom: '1px solid #ffffff',
+        margin: '4px 2px',
     },
 };
 

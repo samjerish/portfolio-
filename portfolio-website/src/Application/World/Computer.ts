@@ -1,32 +1,28 @@
-import * as THREE from 'three';
 import Application from '../Application';
-import BakedModel from '../Utils/BakedModel';
 import Resources from '../Utils/Resources';
+import BakedModel from '../Utils/BakedModel';
 
 export default class Computer {
     application: Application;
-    scene: THREE.Scene;
     resources: Resources;
     bakedModel: BakedModel;
 
     constructor() {
         this.application = new Application();
-        this.scene = this.application.scene;
         this.resources = this.application.resources;
 
-        this.bakeModel();
         this.setModel();
     }
 
-    bakeModel() {
-        this.bakedModel = new BakedModel(
-            this.resources.items.gltfModel.computerSetupModel,
-            this.resources.items.texture.computerSetupTexture,
-            900
-        );
-    }
-
     setModel() {
-        this.scene.add(this.bakedModel.getModel());
+        // Use the original baked computer setup — same approach as environment & decor.
+        // The model + texture are baked in Blender so no extra lights are needed.
+        this.bakedModel = new BakedModel(
+            this.resources.items.gltfModel.computerModel,
+            this.resources.items.texture.computerTexture,
+            900 // same scale as environment and decor
+        );
+
+        this.application.scene.add(this.bakedModel.getModel());
     }
 }

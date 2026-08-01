@@ -7,20 +7,14 @@ const colors = {
     blue: '#0000a3',
     darkBlue: '#0000aa',
     red: '#ff0000',
-    macOSBackground: 'linear-gradient(135deg, #1c1e26 0%, #0d0f12 100%)',
-    macOSMenuBlur: 'rgba(255, 255, 255, 0.1)',
-    macOSMenuBorder: 'rgba(255, 255, 255, 0.2)',
-    trafficLightRed: '#FF605C',
-    trafficLightYellow: '#FFBD44',
-    trafficLightGreen: '#00CA4E',
-    macOSWindowLight: 'rgba(255, 255, 255, 0.95)',
-    macOSWindowDark: 'rgba(30, 30, 30, 0.95)',
-    macOSDockBlur: 'rgba(255, 255, 255, 0.2)',
-    classicMacTeal: '#008080',
-    classicMacPlatinum: '#eeeeee',
-    classicMacBorder: '#666666',
-    classicMacTitle: '#999999',
-    classicMacActiveTitle: '#ccccff',
+    // Windows 98 desktop teal
+    backgroundBlue: '#008080',
+    // Window title bar
+    titleBarActive: '#000080',
+    titleBarInactive: '#808080',
+    // Classic surface
+    surface: '#c0c0c0',
+    surfaceHover: '#e9e9e9',
 } as const;
 
 export type ColorName = keyof typeof colors;

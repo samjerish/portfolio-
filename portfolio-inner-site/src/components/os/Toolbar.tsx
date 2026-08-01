@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Colors from '../../constants/colors';
 import { Icon } from '../general';
-import { motion } from 'framer-motion';
 
 export interface ToolbarProps {
     windows: DesktopWindows;
@@ -9,114 +7,92 @@ export interface ToolbarProps {
     shutdown: () => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({
-    windows,
-    toggleMinimize,
-    shutdown, // unused in dock, moved to menu bar
-}) => {
+const Toolbar: React.FC<ToolbarProps> = ({ windows, toggleMinimize }) => {
     const [highestZIndex, setHighestZIndex] = useState(0);
 
     useEffect(() => {
         let max = 0;
         Object.keys(windows).forEach((key) => {
-            if (windows[key].zIndex >= max) {
-                max = windows[key].zIndex;
-            }
+            if (windows[key].zIndex >= max) max = windows[key].zIndex;
         });
         setHighestZIndex(max);
     }, [windows]);
 
-    const hasWindows = Object.keys(windows).length > 0;
-
     return (
-        <div style={styles.dockContainer}>
-            {hasWindows && (
-                <div style={styles.dock}>
-                    {Object.keys(windows).map((key) => {
-                        const isActive = windows[key].zIndex === highestZIndex && !windows[key].minimized;
-                        return (
-                            <motion.div
-                                key={`dock-${key}`}
-                                style={styles.dockItemContainer}
-                                onClick={() => toggleMinimize(key)}
-                                whileHover={{ scale: 1.2, margin: '0 10px' }}
-                                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                            >
-                                <div style={styles.dockItem}>
-                                    <Icon
-                                        style={styles.dockIcon}
-                                        icon={windows[key].icon}
-                                    />
-                                </div>
-                                <div style={Object.assign({}, styles.activeDot, isActive && styles.activeDotVisible)} />
-                            </motion.div>
-                        );
-                    })}
-                </div>
-            )}
+        <div style={styles.taskbarApps}>
+            {Object.keys(windows).map((key) => {
+                const isActive =
+                    windows[key].zIndex === highestZIndex &&
+                    !windows[key].minimized;
+                return (
+                    <button
+                        key={`tb-${key}`}
+                        style={Object.assign(
+                            {},
+                            styles.taskbarApp,
+                            isActive && styles.taskbarAppActive
+                        )}
+                        onClick={() => toggleMinimize(key)}
+                    >
+                        <Icon
+                            icon={windows[key].icon}
+                            style={styles.taskbarIcon}
+                        />
+                        <span style={styles.taskbarLabel}>
+                            {windows[key].name}
+                        </span>
+                    </button>
+                );
+            })}
         </div>
     );
 };
 
 const styles: StyleSheetCSS = {
-    dockContainer: {
+    taskbarApps: {
         position: 'absolute',
-        bottom: 10,
-        left: 0,
-        width: '100%',
+        bottom: 0,
+        left: 130, // After the Start button + divider (~130px)
+        right: 80,  // Leave space for the clock tray
+        height: 28,
         display: 'flex',
-        justifyContent: 'center',
-        pointerEvents: 'none',
-        zIndex: 100000,
-    },
-    dock: {
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        padding: '10px 10px',
-        backgroundColor: Colors.macOSDockBlur,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderRadius: 24,
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-        pointerEvents: 'auto',
-        minHeight: 60,
-    },
-    dockItemContainer: {
-        display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        margin: '0 5px',
+        padding: '3px 2px',
+        zIndex: 100001, // above MenuBar (100000)
+        gap: 2,
+    },
+    taskbarApp: {
+        display: 'flex',
+        alignItems: 'center',
+        height: 22,
+        minWidth: 100,
+        maxWidth: 180,
+        padding: '0 6px',
+        backgroundColor: '#c0c0c0',
+        border: 'none',
+        boxShadow: 'inset -1px -1px #808080, inset 1px 1px #ffffff, inset -2px -2px #404040, inset 2px 2px #dfdfdf',
         cursor: 'pointer',
-        position: 'relative',
+        fontFamily: 'MSSerif, "MS Sans Serif", sans-serif',
+        fontSize: 11,
+        color: '#000000',
+        gap: 4,
+        overflow: 'hidden',
+        pointerEvents: 'auto',
     },
-    dockItem: {
-        width: 48,
-        height: 48,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 12,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+    taskbarAppActive: {
+        boxShadow: 'inset 1px 1px #808080, inset -1px -1px #ffffff, inset 2px 2px #404040, inset -2px -2px #dfdfdf',
+        backgroundColor: '#b0b0b0',
     },
-    dockIcon: {
-        width: 32,
-        height: 32,
+    taskbarIcon: {
+        width: 14,
+        height: 14,
+        flexShrink: 0,
     },
-    activeDot: {
-        width: 4,
-        height: 4,
-        borderRadius: '50%',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        marginTop: 4,
-        opacity: 0,
-        transition: 'opacity 0.2s',
-    },
-    activeDotVisible: {
-        opacity: 1,
+    taskbarLabel: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        fontSize: 11,
     },
 };
 
